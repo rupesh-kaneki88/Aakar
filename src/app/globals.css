@@ -1,17 +1,45 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Akatab:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap');
 
+/* Global CSS Variables (Root Level) */
 :root {
+  --absolutewhite: #ffffff;
+  --brown-60: #9c7a61;
+  --brown-70: #7f5e42;
+  --dark-06: #1f1f1f;
+  --dark-12: #1a1a1a;
+  --dark-15: #141414;
+  --dark-20: #0f0f0f;
+  --dark-30: #0b0b0b;
+  --grey-40: #b3b3b3;
+  --grey-50: #999999;
+  --grey-70: #4d4d4d;
+  --border: 0, 0%, 80%; /* Adjust this as needed */
+  --input: 0, 0%, 60%; /* Adjust this as needed */
+  --ring: 0, 0%, 90%; /* Adjust this as needed */
   --background: #ffffff;
   --foreground: #171717;
+  --primary: 0, 0%, 50%; /* Adjust this as needed */
+  --primary-foreground: 0, 0%, 95%; /* Adjust this as needed */
+  --secondary: 0, 0%, 40%; /* Adjust this as needed */
+  --secondary-foreground: 0, 0%, 90%; /* Adjust this as needed */
+  --destructive: 0, 100%, 50%; /* Adjust this as needed */
+  --destructive-foreground: 0, 0%, 95%; /* Adjust this as needed */
+  --muted: 0, 0%, 30%; /* Adjust this as needed */
+  --muted-foreground: 0, 0%, 80%; /* Adjust this as needed */
+  --accent: 0, 100%, 80%; /* Adjust this as needed */
+  --accent-foreground: 0, 0%, 100%; /* Adjust this as needed */
+  --popover: 0, 0%, 60%; /* Adjust this as needed */
+  --popover-foreground: 0, 0%, 90%; /* Adjust this as needed */
+  --card: 0, 0%, 50%; /* Adjust this as needed */
+  --card-foreground: 0, 0%, 90%; /* Adjust this as needed */
+
+  --radius: 0.375rem; /* Adjust this to match your design */
+  --font-sans: 'Akatab', Helvetica, Arial, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* Dark Mode Customizations */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,8 +47,232 @@
   }
 }
 
+/* Global Styles */
+* {
+  font-family: 'Akatab', Helvetica, Arial, sans-serif;
+}
+
+html {
+  font-family: 'Akatab', Helvetica, Arial, sans-serif;
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Akatab', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure all text elements inherit the font */
+h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, select, label {
+  font-family: 'Akatab', Helvetica, Arial, sans-serif;
+}
+
+/* Auto-scroll animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+  animation-play-state: running;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Border Radius */
+.lg {
+  border-radius: var(--radius);
+}
+
+.md {
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.sm {
+  border-radius: calc(var(--radius) - 4px);
+}
+
+/* Keyframes & Animations */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+.accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+/* Custom Theme Colors */
+.bg-white {
+  background-color: var(--absolutewhite);
+}
+
+.bg-brown-60 {
+  background-color: var(--brown-60);
+}
+
+.bg-brown-70 {
+  background-color: var(--brown-70);
+}
+
+.bg-dark-06 {
+  background-color: var(--dark-06);
+}
+
+.bg-dark-12 {
+  background-color: var(--dark-12);
+}
+
+.bg-dark-15 {
+  background-color: var(--dark-15);
+}
+
+.bg-dark-20 {
+  background-color: var(--dark-20);
+}
+
+.bg-dark-30 {
+  background-color: var(--dark-30);
+}
+
+.bg-grey-40 {
+  background-color: var(--grey-40);
+}
+
+.bg-grey-50 {
+  background-color: var(--grey-50);
+}
+
+.bg-grey-70 {
+  background-color: var(--grey-70);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-destructive {
+  background-color: var(--destructive);
+}
+
+.bg-muted {
+  background-color: var(--muted);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.bg-popover {
+  background-color: var(--popover);
+}
+
+.bg-card {
+  background-color: var(--card);
+}
+
+/* Text Colors */
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+.text-destructive {
+  color: var(--destructive);
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.text-popover {
+  color: var(--popover);
+}
+
+.text-card {
+  color: var(--card);
+}
+
+/* Border Color */
+.border {
+  border-color: hsl(var(--border));
+}
+
+.input {
+  border-color: hsl(var(--input));
+}
+
+.ring {
+  border-color: hsl(var(--ring));
+}
+
+/* Custom Media Queries */
+@media (min-width: 2xl) {
+  .container {
+    max-width: 1400px;
+    padding: 2rem;
+  }
+}
+
+/* Additional Utility Classes */
+.w-full {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Custom Containers and Layouts */
+.container {
+  width: 100%;
+  padding: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
