@@ -605,9 +605,7 @@ export const Home = (): JSX.Element => {
                 ELEVATE YOUR WARDROBE
               </h2>
               <div className="relative self-stretch font-normal text-[#1F1F1F] text-sm md:text-lg leading-[20px] md:leading-[27px] [font-family:'Akatab',Helvetica] tracking-[0]">
-                Don't miss out – experience the epitome of fashion by
-                clicking 'Buy Now' and embrace a world of chic elegance
-                delivered to your doorstep. Your style journey begins here.
+                {"Don't miss out – experience the epitome of fashion by clicking 'Buy Now' and embrace a world of chic elegance delivered to your doorstep. Your style journey begins here."}
               </div>
             </div>
             <Button
