@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { HeartIcon, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
 import { Separator } from '@/app/components/ui/Separator';
+import Loading from '@/app/components/Loading';
+
 
 interface Product {
   id: string;
@@ -54,18 +56,23 @@ const mockProduct: Product = {
 export default function ProductPage() {
   const { slug } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<string>(mockProduct.colors[0].name);
   const [selectedSize, setSelectedSize] = useState<string>(mockProduct.sizes[0]);
 
   useEffect(() => {
+    setLoading(true);
     // Simulate fetching product data based on slug
     // In a real application, you would fetch from an API
-    setProduct(mockProduct); // For now, always load the mock product
+    setTimeout(() => {
+      setProduct(mockProduct); // For now, always load the mock product
+      setLoading(false);
+    }, 500); // Simulate a small delay
   }, [slug]);
 
-  if (!product) {
-    return <div className="text-center py-8">Loading product...</div>;
+  if (loading || !product) {
+    return <Loading />;
   }
 
   const handlePrevImage = () => {

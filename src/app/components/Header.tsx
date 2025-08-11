@@ -120,11 +120,13 @@ export const Header = (): JSX.Element => {
         </div>
 
         {/* Logo - Center on mobile, left on desktop */}
-        <img
-          className="w-[120px] h-[64px] md:w-[183px] md:h-[97px]"
-          alt="Logo"
-          src="https://c.animaapp.com/mdh9p58vtKPJ88/img/group-6.png"
-        />
+        <Link href='/'>
+          <img
+            className="w-[120px] h-[64px] md:w-[183px] md:h-[97px]"
+            alt="Logo"
+            src="https://c.animaapp.com/mdh9p58vtKPJ88/img/group-6.png"
+          />
+        </Link>
 
         {/* Header Icons - Right side */}
         <div className="flex items-center gap-2 md:gap-4">
