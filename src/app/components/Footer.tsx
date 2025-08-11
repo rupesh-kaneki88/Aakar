@@ -1,9 +1,10 @@
+'use client'
 import React from "react";
 import { Separator } from "@/app/components/ui/Separator";
 import { Button } from "@/app/components/ui/Button";
 import { FacebookIcon, TwitterIcon, LinkedinIcon, PinIcon, InstagramIcon, YoutubeIcon } from "lucide-react";
 
-export const CollectionShowcaseSection = (): React.ReactNode => {
+export const Footer = (): React.ReactNode => {
   // Collection categories data
   const categories = [
     {
@@ -49,7 +50,7 @@ export const CollectionShowcaseSection = (): React.ReactNode => {
   const productLinks = ["All Suits", "Collection", "Indiee Luxee"];
 
   return (
-    <footer className="flex flex-col w-full items-center border-t-[1.57px] border-dashed border-neutral-800">
+    <footer className="bg-white flex flex-col w-full items-center border-t-[1.57px] border-dashed border-neutral-800">
       {/* Categories marquee section */}
       <div className="w-full overflow-hidden relative py-6 md:py-[39.38px]">
         <div className="flex w-max animate-scroll whitespace-nowrap gap-2 md:gap-[12.6px] px-4 md:px-0">

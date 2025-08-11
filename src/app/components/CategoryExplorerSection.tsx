@@ -155,7 +155,7 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
 
                       <div className="flex flex-col md:flex-row items-start gap-2 md:gap-[15.11px]">
                         <div className="flex items-center gap-2 md:gap-[6.05px]">
-                          <span className="[font-family:'Akatab',Helvetica] font-normal text-grey-50 text-xs md:text-[13.6px] leading-[15px] md:leading-[20.4px]">
+                          <span className="[font-family:'Akatab',Helvetica] font-medium text-[#4b3d34] text-sm md:text-[15.1px] leading-[18px] md:leading-[22.7px] mt-[-0.76px]">
                             Color
                           </span>
                           <div className="w-[3.02px] h-[3.02px] bg-dark-30 rounded-[1.51px]" />
@@ -165,7 +165,7 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
                         </div>
 
                         <div className="flex items-center gap-2 md:gap-[6.05px]">
-                          <span className="[font-family:'Akatab',Helvetica] font-normal text-grey-50 text-xs md:text-[13.6px] leading-[15px] md:leading-[20.4px]">
+                          <span className="[font-family:'Akatab',Helvetica] font-medium text-[#4b3d34] text-sm md:text-[15.1px] leading-[18px] md:leading-[22.7px] mt-[-0.76px]">
                             Price
                           </span>
                           <div className="w-[3.02px] h-[3.02px] bg-dark-30 rounded-[1.51px]" />

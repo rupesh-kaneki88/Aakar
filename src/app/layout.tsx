@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./loading.css";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
+import { Header } from "@/app/components/Header";
+import { Footer } from "@/app/components/Footer";
 
 export const metadata: Metadata = {
   title: "AAKAAR Studio - Rooted in Tradition, Designed for YOU",
@@ -27,7 +30,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Header />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
