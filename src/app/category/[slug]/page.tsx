@@ -86,7 +86,7 @@ export default function CategoryPage() {
   }, [page, fetchProducts]);
 
   return (
-    <div className="bg-white flex flex-col rounded-[15.11px] overflow-hidden overflow-x-hidden relative md:mx-[53px] mx-auto px-4 py-4">
+    <div className="bg-[#F6F7F8] flex flex-col rounded-[15.11px] overflow-hidden overflow-x-hidden relative md:mx-[53px] mx-auto px-4 py-4">
       <h1 className="text-4xl font-bold text-center mb-8 text-[#4F482C]">{categoryTitle}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">

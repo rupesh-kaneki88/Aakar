@@ -3,7 +3,7 @@ import '../loading.css';
 
 export default function Loading() {
   return (
-    <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-white/70 flex items-center justify-center z-50">
       <img
         className="w-[183px] h-[97px] zoom-in-out"
         alt="Logo"

@@ -82,7 +82,7 @@ export default function ProductPage() {
     }, 1500); // Simulate a 1.5-second loading time
   };
 
-  if (loading || !product) {
+  if (file || !product) {
     return <Loading />;
   }
 

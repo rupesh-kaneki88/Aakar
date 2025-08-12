@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { X, Plus, Minus, Trash2, Heart } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
-import { Separator } from '@/app/components/ui/Separator';
+import Link from 'next/link';
 
 interface CartItem {
   id: string;
@@ -12,6 +12,7 @@ interface CartItem {
   price: string;
   imageUrl: string;
   color: string;
+  size: string;
   quantity: number;
 }
 
@@ -27,6 +28,7 @@ const mockCartItems: CartItem[] = [
     price: '₹ 15,000',
     imageUrl: '/straight-suits/IMG_01.svg',
     color: 'Ivory',
+    size: 'M',
     quantity: 1,
   },
   {
@@ -35,6 +37,7 @@ const mockCartItems: CartItem[] = [
     price: '₹ 18,000',
     imageUrl: '/straight-suits/IMG_02.svg',
     color: 'Black',
+    size: 'L',
     quantity: 2,
   },
   {
@@ -43,6 +46,7 @@ const mockCartItems: CartItem[] = [
     price: '₹ 22,000',
     imageUrl: '/straight-suits/IMG_03.svg',
     color: 'Red',
+    size: 'S',
     quantity: 1,
   },
 ];
@@ -111,13 +115,14 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     </h3>
                     <p className="font-medium text-[#4F482C] text-[18.56px] mb-2">{item.price}</p>
                     <p className="text-[15.11px] text-[#000000]">Color: {item.color}</p>
+                    <p className="text-[15.11px] text-[#000000]">Size: {item.size}</p>
                   </div>
                   <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center border border-gray-300 rounded-md">
+                    <div className="flex items-center border border-gray-300 rounded-none">
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-[#4B3D34]"
+                        className="h-8 w-8 text-[#4B3D34] bg-[#DFE5E5] rounded-none"
                         onClick={() => handleQuantityChange(item.id, -1)}
                       >
                         <Minus className="h-4 w-4" />
@@ -126,7 +131,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-[#4B3D34]"
+                        className="h-8 w-8 text-[#4B3D34] bg-[#DFE5E5] rounded-none"
                         onClick={() => handleQuantityChange(item.id, 1)}
                       >
                         <Plus className="h-4 w-4" />
@@ -151,7 +156,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
         {/* Checkout Section */}
         {cartItems.length > 0 && (
-          <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-white">
+          <div className="bg-[#DFE5E5] absolute bottom-0 left-0 right-0 p-4 border-t">
             <div className="flex justify-between items-center mb-2">
               <span className="text-[#000000] text-[18.56px] font-semibold">Total</span>
               <span className="text-[#000000] text-[18.56px] font-semibold">₹ {subtotal.toLocaleString('en-IN')}</span>
@@ -159,8 +164,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             <p className="text-[#000000] text-[15.11px] mb-4">
               Shipping and taxes calculated at checkout
             </p>
-            <Button className="w-full bg-[#4B3D34] text-white py-6 rounded-md text-lg">
-              Proceed to Checkout
+            <Button asChild className="w-full bg-[#4B3D34] text-white py-7 rounded-md text-lg">
+              <Link href="/checkout/cart" onClick={onClose}>
+                Go to Cart
+              </Link>
             </Button>
           </div>
         )}

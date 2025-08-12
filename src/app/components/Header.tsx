@@ -46,7 +46,7 @@ export const Header = (): JSX.Element => {
   };
 
   return (
-    <div className="bg-white md:mb-10 border-b-2 border-dashed md:pb-4">
+    <div className="bg-white md:mb-10 md:pb-4">
       {/* Header with logo and navigation */}
       <div className="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-[140px] py-4 md:py-[37px] relative">
         {/* Mobile: Hamburger Menu, Desktop: Social Media Icons */}
