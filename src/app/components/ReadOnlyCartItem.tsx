@@ -3,19 +3,11 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  imageUrl: string;
-  color: string;
-  size: string;
-  quantity: number;
-}
+import { CartItem } from '@/lib/types';
 
 interface ReadOnlyCartItemProps {
-  item: CartItem;
-}
+    item: CartItem;
+  }
 
 export function ReadOnlyCartItem({ item }: ReadOnlyCartItemProps) {
   return (
@@ -34,8 +26,8 @@ export function ReadOnlyCartItem({ item }: ReadOnlyCartItemProps) {
             {item.name}
           </h3>
           <p className="font-medium text-[#4F482C] text-[18.56px] mb-2">{item.price}</p>
-          <p className="text-[15.11px] text-[#000000]">Color: {item.color}</p>
-          <p className="text-[15.11px] text-[#000000]">Size: {item.size}</p>
+          <p className="text-[15.11px] text-[#000000]">Color: {item.selectedColor}</p>
+          <p className="text-[15.11px] text-[#000000]">Size: {item.selectedSize}</p>
           <p className="text-[15.11px] text-[#000000]">Quantity: {item.quantity}</p>
         </div>
       </div>

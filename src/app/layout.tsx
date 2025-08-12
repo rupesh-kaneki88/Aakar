@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { LoadingProvider } from "@/app/providers/LoadingProvider";
+import { CartProvider } from "@/app/providers/CartProvider";
+import { Toaster } from "@/app/components/ui/Sonner";
 
 export const metadata: Metadata = {
   title: "AAKAAR Studio - Rooted in Tradition, Designed for YOU",
@@ -32,9 +34,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LoadingProvider>
-            <Header />
-            {children}
-            <Footer />
+            <CartProvider>
+              <Header />
+              {children}
+              <Footer />
+              <Toaster />
+            </CartProvider>
           </LoadingProvider>
         </ThemeProvider>
       </body>

@@ -5,74 +5,24 @@ import Image from 'next/image';
 import { X, Plus, Minus, Trash2, Heart } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
 import Link from 'next/link';
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  imageUrl: string;
-  color: string;
-  size: string;
-  quantity: number;
-}
-
-interface CartSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const mockCartItems: CartItem[] = [
-  {
-    id: '1',
-    name: 'Elegant Straight Suit',
-    price: '₹ 15,000',
-    imageUrl: '/straight-suits/IMG_01.svg',
-    color: 'Ivory',
-    size: 'M',
-    quantity: 1,
-  },
-  {
-    id: '2',
-    name: 'Floral Straight Suit',
-    price: '₹ 18,000',
-    imageUrl: '/straight-suits/IMG_02.svg',
-    color: 'Black',
-    size: 'L',
-    quantity: 2,
-  },
-  {
-    id: '3',
-    name: 'Embroidered Straight Suit',
-    price: '₹ 22,000',
-    imageUrl: '/straight-suits/IMG_03.svg',
-    color: 'Red',
-    size: 'S',
-    quantity: 1,
-  },
-];
+import { useCart } from '@/app/providers/CartProvider';
+import { CartSidebarProps } from '@/lib/types';
 
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
+  const { cartItems, removeItem, updateQuantity, getCartTotal } = useCart();
 
-  const handleQuantityChange = (id: string, delta: number) => {
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-      )
-    );
+  const handleQuantityChange = (id: string, selectedColor: string, selectedSize: string, delta: number) => {
+    const item = cartItems.find(i => i.id === id && i.selectedColor === selectedColor && i.selectedSize === selectedSize);
+    if (item) {
+      updateQuantity(id, selectedColor, selectedSize, item.quantity + delta);
+    }
   };
 
-  const handleRemoveItem = (id: string) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+  const handleRemoveItem = (id: string, selectedColor: string, selectedSize: string) => {
+    removeItem(id, selectedColor, selectedSize);
   };
 
-  const parsePrice = (priceString: string): number => {
-    return parseFloat(priceString.replace(/[^0-9.-]+/g, ""));
-  };
-
-  const subtotal = cartItems.reduce((sum, item) => {
-    return sum + parsePrice(item.price) * item.quantity;
-  }, 0);
+  const subtotal = getCartTotal();
 
   return (
     <>
@@ -99,7 +49,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             <p className="text-center text-gray-500 mt-8">Your bag is empty.</p>
           ) : (
             cartItems.map(item => (
-              <div key={item.id} className="flex items-center space-x-4 py-4 mb-8">
+              <div key={`${item.id}-${item.selectedColor}-${item.selectedSize}`} className="flex items-center space-x-4 py-4 mb-8">
                 <div className="relative w-[135px] h-[200px] flex-shrink-0">
                   <Image
                     src={item.imageUrl}
@@ -114,8 +64,8 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       {item.name}
                     </h3>
                     <p className="font-medium text-[#4F482C] text-[18.56px] mb-2">{item.price}</p>
-                    <p className="text-[15.11px] text-[#000000]">Color: {item.color}</p>
-                    <p className="text-[15.11px] text-[#000000]">Size: {item.size}</p>
+                    <p className="text-[15.11px] text-[#000000]">Color: {item.selectedColor}</p>
+                    <p className="text-[15.11px] text-[#000000]">Size: {item.selectedSize}</p>
                   </div>
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center border border-gray-300 rounded-none">
@@ -123,7 +73,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-[#4B3D34] bg-[#DFE5E5] rounded-none"
-                        onClick={() => handleQuantityChange(item.id, -1)}
+                        onClick={() => handleQuantityChange(item.id, item.selectedColor, item.selectedSize, -1)}
                       >
                         <Minus className="h-4 w-4" />
                       </Button>
@@ -132,7 +82,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 text-[#4B3D34] bg-[#DFE5E5] rounded-none"
-                        onClick={() => handleQuantityChange(item.id, 1)}
+                        onClick={() => handleQuantityChange(item.id, item.selectedColor, item.selectedSize, 1)}
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
@@ -142,7 +92,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         <Heart className="h-5 w-5" />
                       </Button>
                       <Button variant="ghost" size="icon" className="text-[#4B3D34]"
-                        onClick={() => handleRemoveItem(item.id)}
+                        onClick={() => handleRemoveItem(item.id, item.selectedColor, item.selectedSize)}
                       >
                         <Trash2 className="h-5 w-5" />
                       </Button>

@@ -9,10 +9,14 @@ import {
 } from "@/app/components/ui/Navigation-menu";
 import Link from 'next/link';
 import { CartSidebar } from '@/app/components/CartSidebar';
+import { useCart } from '@/app/providers/CartProvider';
+import { useLoading } from '@/app/providers/LoadingProvider';
 
 export const Header = (): JSX.Element => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const { getCartItemCount } = useCart();
+  const { setIsLoading } = useLoading();
 
   // Navigation menu items
   const navItems = [
@@ -45,8 +49,12 @@ export const Header = (): JSX.Element => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handleLinkClick = () => {
+    setIsLoading(true);
+  };
+
   return (
-    <div className="bg-white md:mb-10 md:pb-4">
+    <div className="bg-white md:pb-8">
       {/* Header with logo and navigation */}
       <div className="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-[140px] py-4 md:py-[37px] relative">
         {/* Mobile: Hamburger Menu, Desktop: Social Media Icons */}
@@ -122,7 +130,7 @@ export const Header = (): JSX.Element => {
         </div>
 
         {/* Logo - Center on mobile, left on desktop */}
-        <Link href='/'>
+        <Link href='/' onClick={handleLinkClick}>
           <img
             className="w-[120px] h-[64px] md:w-[183px] md:h-[97px]"
             alt="Logo"
@@ -175,7 +183,7 @@ export const Header = (): JSX.Element => {
             <div className="[font-family:'Akatab',Helvetica] font-normal text-[#4b3d34] text-sm md:text-[17.1px]">
               <span className="font-bold">Bag </span>
               <span className="font-black">|</span>
-              <span className="font-bold"> 0</span>
+              <span className="font-bold"> {getCartItemCount()}</span>
             </div>
           </div>
         </div>
@@ -262,7 +270,7 @@ export const Header = (): JSX.Element => {
                             className="w-full text-left [font-family:'Akatab',Helvetica] font-normal text-neutral-800 text-base tracking-[0] leading-[25.6px] cursor-pointer bg-transparent border-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary px-3 py-2 rounded hover:bg-gray-100"
                             aria-label={item.text}
                             tabIndex={0}
-                            onClick={toggleSidebar}
+                            onClick={() => { handleLinkClick(); toggleSidebar(); }}
                           >
                             {item.text}
                           </Link>
@@ -348,6 +356,7 @@ export const Header = (): JSX.Element => {
                 className="[font-family:'Akatab',Helvetica] font-normal text-neutral-800 text-[17.1px] tracking-[0] leading-[25.6px] cursor-pointer bg-transparent border-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary px-1 rounded"
                 aria-label={item.text}
                 tabIndex={0}
+                onClick={handleLinkClick}
               >
                 {item.text}
               </Link>
@@ -359,3 +368,4 @@ export const Header = (): JSX.Element => {
     </div>
   );
 };
+

@@ -75,7 +75,7 @@ export const Home = (): JSX.Element => {
         
 
         {/* Hero Section */}
-        <section className="w-full mt-4 md:mt-8 relative" aria-labelledby="hero-heading">
+        <section className="w-full relative" aria-labelledby="hero-heading">
           <HeroImageSection />
           {/* Uncommented Shop Now button for demonstration */}
           {/* <Button

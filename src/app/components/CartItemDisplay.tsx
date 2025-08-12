@@ -4,21 +4,12 @@ import React from 'react';
 import Image from 'next/image';
 import { Plus, Minus, Trash2, Heart } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  imageUrl: string;
-  color: string;
-  size: string;
-  quantity: number;
-}
+import { CartItem } from '@/lib/types';
 
 interface CartItemDisplayProps {
   item: CartItem;
-  onQuantityChange: (id: string, delta: number) => void;
-  onRemoveItem: (id: string) => void;
+  onQuantityChange: (id: string, color: string, size: string, delta: number) => void;
+  onRemoveItem: (id: string, color: string, size: string) => void;
 }
 
 export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartItemDisplayProps) {
@@ -39,8 +30,8 @@ export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartIt
             {item.name}
           </h3>
           <p className="font-medium text-[#4F482C] text-[18.56px] mb-2">{item.price}</p>
-          <p className="text-[15.11px] text-[#000000]">Color: {item.color}</p>
-          <p className="text-[15.11px] text-[#000000]">Size: {item.size}</p>
+          <p className="text-[15.11px] text-[#000000]">Color: {item.selectedColor}</p>
+          <p className="text-[15.11px] text-[#000000]">Size: {item.selectedSize}</p>
         </div>
         <div className="flex items-center justify-between mt-2">
           <div className="flex items-center border border-gray-300 rounded-md">
@@ -48,7 +39,7 @@ export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartIt
               variant="ghost"
               size="icon"
               className="h-8 w-8 text-[#4B3D34]"
-              onClick={() => onQuantityChange(item.id, -1)}
+              onClick={() => onQuantityChange(item.id, item.selectedColor, item.selectedSize, -1)}
             >
               <Minus className="h-4 w-4" />
             </Button>
@@ -57,7 +48,7 @@ export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartIt
               variant="ghost"
               size="icon"
               className="h-8 w-8 text-[#4B3D34]"
-              onClick={() => onQuantityChange(item.id, 1)}
+              onClick={() => onQuantityChange(item.id, item.selectedColor, item.selectedSize, 1)}
             >
               <Plus className="h-4 w-4" />
             </Button>
@@ -67,7 +58,7 @@ export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartIt
               <Heart className="h-5 w-5" />
             </Button>
             <Button variant="ghost" size="icon" className="text-[#4B3D34]"
-              onClick={() => onRemoveItem(item.id)}
+              onClick={() => onRemoveItem(item.id, item.selectedColor, item.selectedSize)}
             >
               <Trash2 className="h-5 w-5" />
             </Button>

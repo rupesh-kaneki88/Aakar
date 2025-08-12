@@ -7,53 +7,11 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import Loading from '@/app/components/Loading';
 import { useLoading } from '@/app/providers/LoadingProvider';
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  imageUrl: string;
-  color: string;
-  size: string;
-  quantity: number;
-}
-
-const mockCartItems: CartItem[] = [
-  {
-    id: '1',
-    name: 'Elegant Straight Suit',
-    price: '₹ 15,000',
-    imageUrl: '/straight-suits/IMG_01.svg',
-    color: 'Ivory',
-    size: 'M',
-    quantity: 1,
-  },
-  {
-    id: '2',
-    name: 'Floral Straight Suit',
-    price: '₹ 18,000',
-    imageUrl: '/straight-suits/IMG_02.svg',
-    color: 'Black',
-    size: 'L',
-    quantity: 2,
-  },
-  {
-    id: '3',
-    name: 'Embroidered Straight Suit',
-    price: '₹ 22,000',
-    imageUrl: '/straight-suits/IMG_03.svg',
-    color: 'Red',
-    size: 'S',
-    quantity: 1,
-  },
-];
-
-const parsePrice = (priceString: string): number => {
-  return parseFloat(priceString.replace(/[^0-9.-]+/g, ""));
-};
+import { useCart } from '@/app/providers/CartProvider';
 
 export default function PaymentPage() {
   const { isLoading, setIsLoading } = useLoading();
+  const { cartItems, getCartTotal } = useCart();
 
   useEffect(() => {
     // Simulate a network request or data loading
@@ -63,10 +21,9 @@ export default function PaymentPage() {
 
     return () => clearTimeout(timer); // Cleanup the timer
   }, [setIsLoading]);
+  
 
-  const subtotal = mockCartItems.reduce((sum, item) => {
-    return sum + parsePrice(item.price) * item.quantity;
-  }, 0);
+  const subtotal = getCartTotal();
 
   const shipping = 500; // Mock shipping cost
   const taxRate = 0.18; // Mock tax rate (18%)
@@ -148,10 +105,10 @@ export default function PaymentPage() {
         <div className="w-full lg:w-1/2 p-4">
           <h2 className="text-[18.56px] font-semibold text-[#4F482C] mb-4">Order Summary</h2>
           <div className="max-h-[400px] overflow-y-auto mb-4">
-            {mockCartItems.length === 0 ? (
+            {cartItems.length === 0 ? (
               <p className="text-center text-gray-500 mt-8">Your cart is empty.</p>
             ) : (
-              mockCartItems.map(item => (
+              cartItems.map(item => (
                 <ReadOnlyCartItem key={item.id} item={item} />
               ))
             )}

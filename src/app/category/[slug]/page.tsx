@@ -8,31 +8,8 @@ import Loading from '@/app/components/Loading';
 import Sidebar from '@/app/components/Sidebar';
 import Link from 'next/link';
 import { Button } from '@/app/components/ui/Button';
-
-interface Product {
-  id: string;
-  name: string;
-  imageUrl: string;
-  price: string;
-  category: string;
-  color: string;
-}
-
-// Mock data for demonstration
-const mockProducts: Product[] = [
-  { id: '1', name: 'Elegant Straight Suit', imageUrl: '/straight-suits/IMG_01.svg', price: '₹ 15,000', category: 'straight-suits', color:'Ivory' },
-  { id: '2', name: 'Floral Straight Suit', imageUrl: '/straight-suits/IMG_02.svg', price: '₹ 18,000', category: 'straight-suits', color:'Ivory' },
-  { id: '3', name: 'Embroidered Straight Suit', imageUrl: '/straight-suits/IMG_03.svg', price: '₹ 22,000', category: 'straight-suits', color:'Ivory' },
-  { id: '4', name: 'Classic Straight Suit', imageUrl: '/straight-suits/IMG_04.svg', price: '₹ 16,500', category: 'straight-suits', color:'Ivory' },
-  { id: '5', name: 'Modern Straight Suit', imageUrl: '/straight-suits/IMG_05.svg', price: '₹ 19,500', category: 'straight-suits', color:'Ivory' },
-  { id: '6', name: 'Party Wear Straight Suit', imageUrl: '/straight-suits/IMG_06.svg', price: '₹ 25,000', category: 'straight-suits', color:'Ivory' },
-  { id: '7', name: 'Casual Straight Suit', imageUrl: '/straight-suits/IMG_07.svg', price: '₹ 14,000', category: 'straight-suits', color:'Ivory' },
-  { id: '8', name: 'Designer Straight Suit', imageUrl: '/straight-suits/IMG_08.svg', price: '₹ 28,000', category: 'straight-suits', color:'Ivory' },
-  { id: '9', name: 'Simple Straight Suit', imageUrl: '/straight-suits/IMG_09.svg', price: '₹ 13,500', category: 'straight-suits', color:'Ivory' },
-  { id: '10', name: 'Anarkali Gown', imageUrl: '/anarkali.jpg', price: '₹ 30,000', category: 'anarkalis', color:'Ivory' },
-  { id: '11', name: 'Anarkali Dress', imageUrl: '/anarkali.jpg', price: '₹ 27,000', category: 'anarkalis', color:'Ivory' },
-  { id: '12', name: 'Anarkali Frock', imageUrl: '/anarkali.jpg', price: '₹ 29,000', category: 'anarkalis', color:'Ivory' },
-];
+import { Product } from '@/lib/types';
+import { mockProducts } from '@/lib/mockProducts';
 
 const PRODUCTS_PER_PAGE = 9;
 

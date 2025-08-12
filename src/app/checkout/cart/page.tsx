@@ -7,73 +7,27 @@ import { Button } from '@/app/components/ui/Button';
 import { Input } from '@/app/components/ui/Input';
 import Link from 'next/link';
 import { useLoading } from '@/app/providers/LoadingProvider';
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  imageUrl: string;
-  color: string;
-  size: string;
-  quantity: number;
-}
-
-const mockCartItems: CartItem[] = [
-  {
-    id: '1',
-    name: 'Elegant Straight Suit',
-    price: '₹ 15,000',
-    imageUrl: '/straight-suits/IMG_01.svg',
-    color: 'Ivory',
-    size: 'M',
-    quantity: 1,
-  },
-  {
-    id: '2',
-    name: 'Floral Straight Suit',
-    price: '₹ 18,000',
-    imageUrl: '/straight-suits/IMG_02.svg',
-    color: 'Black',
-    size: 'L',
-    quantity: 2,
-  },
-  {
-    id: '3',
-    name: 'Embroidered Straight Suit',
-    price: '₹ 22,000',
-    imageUrl: '/straight-suits/IMG_03.svg',
-    color: 'Red',
-    size: 'S',
-    quantity: 1,
-  },
-];
-
-const parsePrice = (priceString: string): number => {
-  return parseFloat(priceString.replace(/[^0-9.-]+/g, ""));
-};
+import { useCart } from '@/app/providers/CartProvider';
 
 export default function ShoppingCartPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
   const { isLoading, setIsLoading } = useLoading();
+  const { cartItems, removeItem, updateQuantity, getCartTotal } = useCart();
 
-  const handleQuantityChange = (id: string, delta: number) => {
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-      )
-    );
+  const handleQuantityChange = (id: string, selectedColor: string, selectedSize: string, delta: number) => {
+    const item = cartItems.find(i => i.id === id && i.selectedColor === selectedColor && i.selectedSize === selectedSize);
+    if (item) {
+      updateQuantity(id, selectedColor, selectedSize, item.quantity + delta);
+    }
   };
 
-  const handleRemoveItem = (id: string) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+  const handleRemoveItem = (id: string, selectedColor: string, selectedSize: string) => {
+    removeItem(id, selectedColor, selectedSize);
   };
 
-  const subtotal = cartItems.reduce((sum, item) => {
-    return sum + parsePrice(item.price) * item.quantity;
-  }, 0);
+  const subtotal = getCartTotal();
 
-  const shipping = 500; // Mock shipping cost
-  const taxRate = 0.18; // Mock tax rate (18%)
+  const shipping = 0; // Shipping cost (dynamic in a real app)
+  const taxRate = 0; // Tax rate (dynamic in a real app)
   const tax = subtotal * taxRate;
   const payableAmount = subtotal + shipping + tax;
 
@@ -131,7 +85,7 @@ export default function ShoppingCartPage() {
               ) : (
                 cartItems.map(item => (
                   <CartItemDisplay
-                    key={item.id}
+                    key={`${item.id}-${item.selectedColor}-${item.selectedSize}`}
                     item={item}
                     onQuantityChange={handleQuantityChange}
                     onRemoveItem={handleRemoveItem}
