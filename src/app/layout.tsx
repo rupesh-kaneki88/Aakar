@@ -4,6 +4,7 @@ import "./loading.css";
 import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
+import { LoadingProvider } from "@/app/providers/LoadingProvider";
 
 export const metadata: Metadata = {
   title: "AAKAAR Studio - Rooted in Tradition, Designed for YOU",
@@ -30,9 +31,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          {children}
-          <Footer />
+          <LoadingProvider>
+            <Header />
+            {children}
+            <Footer />
+          </LoadingProvider>
         </ThemeProvider>
       </body>
     </html>

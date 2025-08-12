@@ -8,6 +8,8 @@ import { HeartIcon, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lu
 import { Button } from '@/app/components/ui/Button';
 import { Separator } from '@/app/components/ui/Separator';
 import Loading from '@/app/components/Loading';
+import { useLoading } from '@/app/providers/LoadingProvider';
+import { RecommendedProductsSection } from '@/app/components/RecommendedProductsSection';
 
 
 interface Product {
@@ -60,6 +62,7 @@ export default function ProductPage() {
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<string>(mockProduct.colors[0].name);
   const [selectedSize, setSelectedSize] = useState<string>(mockProduct.sizes[0]);
+  const { setIsLoading } = useLoading();
 
   useEffect(() => {
     setLoading(true);
@@ -70,6 +73,14 @@ export default function ProductPage() {
       setLoading(false);
     }, 500); // Simulate a small delay
   }, [slug]);
+
+  const handleAddToCart = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      alert('Added to cart!');
+      setIsLoading(false);
+    }, 1500); // Simulate a 1.5-second loading time
+  };
 
   if (loading || !product) {
     return <Loading />;
@@ -197,7 +208,7 @@ export default function ProductPage() {
 
           {/* Action Buttons */}
           <div className="flex gap-4 mb-4">
-            <Button className="bg-[#4B3D34] text-white px-8 py-2 rounded-md" onClick={() => alert('Added to cart!')}>Add to Cart</Button>
+            <Button className="bg-[#4B3D34] text-white px-8 py-2 rounded-md" onClick={handleAddToCart}>Add to Cart</Button>
             <Button variant="outline" size="icon" className="border-[#4B3D34]">
               <HeartIcon className="w-5 h-5 text-[#4B3D34]" />
             </Button>
@@ -220,6 +231,7 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
+      <RecommendedProductsSection />
     </div>
   );
 }

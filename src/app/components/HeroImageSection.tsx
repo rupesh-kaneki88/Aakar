@@ -1,7 +1,19 @@
 import React from "react";
 import { Button } from "@/app/components/ui/Button";
+import { useLoading } from "@/app/providers/LoadingProvider";
 
 export const HeroImageSection: React.FC = () => {
+  const { isLoading, setIsLoading } = useLoading();
+
+  const handleShopNowClick = () => {
+    setIsLoading(true);
+    // Simulate an asynchronous operation, e.g., fetching data or navigating
+    setTimeout(() => {
+      alert('Shop Now functionality coming soon!');
+      setIsLoading(false);
+    }, 2000); // Simulate a 2-second loading time
+  };
+
   return (
     <section className="relative w-full h-[300px] md:h-[595px] overflow-hidden">
       <div className="relative w-full h-full flex">
@@ -44,7 +56,7 @@ export const HeroImageSection: React.FC = () => {
             <Button
               className="mt-4 bg-[#4B3D34] text-white rounded-[11.37px] border-[0.95px] border-none md:w-[150px] md:h-[60px] font-roboto text-sm md:text-[17.1px] flex items-center gap-1 w-fit"
               aria-label="Shop Now"
-              onClick={() => alert('Shop Now functionality coming soon!')}
+              onClick= {handleShopNowClick}
             >
               Shop Now
               <span className="sr-only">Go to shop section</span>

@@ -12,8 +12,11 @@ import { FeaturedProductsSection } from "@/app/components/FeaturedProductSection
 import { HeroImageSection } from "@/app/components/HeroImageSection";
 import { PromotionalBannerSection } from "@/app/components/PromotionalBannerSection";
 import { ThemeToggle } from "@/app/components/ThemeToggle";
+import { useLoading } from "@/app/providers/LoadingProvider";
+import Loading from "@/app/components/Loading";
 
 export const Home = (): JSX.Element => {
+  const { isLoading, setIsLoading } = useLoading();
 
   // Navigation menu items
   const navItems = [
@@ -53,23 +56,32 @@ export const Home = (): JSX.Element => {
     },
   ];
 
-  
+  const handleShopNowClick = () => {
+    setIsLoading(true);
+    // Simulate an asynchronous operation, e.g., fetching data or navigating
+    setTimeout(() => {
+      alert('Shop Now functionality coming soon!');
+      setIsLoading(false);
+    }, 2000); // Simulate a 2-second loading time
+  };
 
   return (
     <div
       className="bg-white flex flex-row justify-center w-full"
       data-model-id="5489:169"
     >
+      {isLoading && <Loading />}
       <div className="bg-white overflow-hidden w-full relative">
         
 
         {/* Hero Section */}
         <section className="w-full mt-4 md:mt-8 relative" aria-labelledby="hero-heading">
           <HeroImageSection />
+          {/* Uncommented Shop Now button for demonstration */}
           {/* <Button
             className="absolute top-[200px] md:top-[368px] left-1/2 transform -translate-x-1/2 md:left-[721px] md:transform-none bg-[#4b3d34] text-white rounded-[11.37px] border-[0.95px] border-dashed [font-family:'Roboto',Helvetica] text-sm md:text-[17.1px] flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
             aria-label="Shop Now"
-            onClick={() => alert('Shop Now functionality coming soon!')}
+            onClick={handleShopNowClick}
           >
             Shop Now
             <span className="sr-only">Go to shop section</span>
@@ -285,7 +297,7 @@ export const Home = (): JSX.Element => {
             <Button
               className="absolute top-[200px] md:top-[351px] left-4 md:left-[667px] bg-[#4b3d34] text-white rounded-[9.07px] border-[0.76px] border-none [font-family:'Akatab',Helvetica] text-xs md:text-sm flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
               aria-label="Shop Now"
-              onClick={() => alert('Shop Now functionality coming soon!')}
+              onClick={handleShopNowClick}
             >
               Shop Now
               <span className="sr-only">Go to shop section</span>

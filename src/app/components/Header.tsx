@@ -8,9 +8,11 @@ import {
   NavigationMenuList,
 } from "@/app/components/ui/Navigation-menu";
 import Link from 'next/link';
+import { CartSidebar } from '@/app/components/CartSidebar';
 
 export const Header = (): JSX.Element => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Navigation menu items
   const navItems = [
@@ -36,7 +38,7 @@ export const Header = (): JSX.Element => {
     alert('Wishlist functionality coming soon!');
   }
   const handleCartClick = () => {
-    alert('Cart sidebar coming soon!');
+    setIsCartOpen(!isCartOpen);
   };
 
   const toggleSidebar = () => {
@@ -353,6 +355,7 @@ export const Header = (): JSX.Element => {
           ))}
         </ul>
       </nav>
+      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
 };
