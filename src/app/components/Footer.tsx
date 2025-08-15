@@ -2,7 +2,7 @@
 import React from "react";
 import { Separator } from "@/app/components/ui/Separator";
 import { Button } from "@/app/components/ui/Button";
-import { FacebookIcon, TwitterIcon, LinkedinIcon, PinIcon, InstagramIcon, YoutubeIcon } from "lucide-react";
+import { FacebookIcon, TwitterIcon, LinkedinIcon, PinIcon, InstagramIcon, YoutubeIcon, ArrowRight } from "lucide-react";
 
 export const Footer = (): React.ReactNode => {
   // Collection categories data
@@ -78,11 +78,11 @@ export const Footer = (): React.ReactNode => {
       <div className="w-full h-[66px] flex items-center justify-between px-4 md:px-44 bg-[#ffffff] md:h-66 border-t-[1.57px] border-dashed border-neutral-800">
         {/* Logo on the left */}
         <div className="flex items-center">
-          <img src="/aakar_studio_logo.png" alt="Aakar Studio Logo" className="h-20 md:h-34" />
+          <img src="/aakar_studio_logo.png" alt="Aakar Studio Logo" className="h-14 md:h-34" />
         </div>
 
         {/* Social Media Icons on the right */}
-        <div className="flex items-center gap-2 md:gap-3 bg-[#4B3D34] rounded-lg px-3 md:px-4 py-2 md:py-3 md:h-20">
+        <div className="flex items-center gap-1 md:gap-3 bg-[#4B3D34] rounded-lg px-2 md:px-4 py-2 md:py-3 md:h-20">
           <Button
             variant="ghost"
             size="icon"
@@ -139,19 +139,15 @@ export const Footer = (): React.ReactNode => {
           </Button>
         </div>
       </div>
-      {/* <img
-        className="relative w-full"
-        alt="Sub container"
-        src="https://c.animaapp.com/mdh9p58vtKPJ88/img/sub-container.svg"
-      /> */}
+
 
       {/* Footer content */}
       <div className="flex flex-col items-center w-full border-t-[1.57px] border-dashed border-neutral-800">
         {/* Main footer sections */}
-        <div className="flex flex-col md:flex-row items-start gap-8 md:gap-[63px] px-4 md:px-[127.57px] py-8 md:py-[63px] w-full border-b-[1.57px] border-dashed border-neutral-800">
+        <div className="flex flex-col md:flex-row items-start gap-4 md:gap-[63px] px-4 md:px-[127.57px] py-4 md:py-[63px] w-full border-b-[1.57px] border-dashed border-neutral-800">
           {/* Home section */}
-          <div className="flex flex-col items-start gap-4 md:gap-[23.62px] flex-1">
-            <h3 className="w-full mt-[-0.79px] font-medium text-[#4e472c] text-base md:text-[17.3px] leading-normal [font-family:'Akatab',Helvetica] tracking-[0]">
+          <div className="flex flex-col items-start gap-2 md:gap-[23.62px] flex-1">
+            <h3 className="w-full mt-[-0.79px] font-bold text-[#4e472c] text-base md:text-[17.3px] leading-normal [font-family:'Akatab',Helvetica] tracking-[0]">
               Home
             </h3>
 
@@ -170,8 +166,8 @@ export const Footer = (): React.ReactNode => {
           </div>
 
           {/* Products section */}
-          <div className="flex flex-col items-start gap-4 md:gap-[23.62px] flex-1">
-            <h3 className="w-full mt-[-0.79px] font-medium text-[#4e472c] text-base md:text-[17.3px] leading-normal [font-family:'Akatab',Helvetica] tracking-[0]">
+          <div className="flex flex-col items-start gap-2 md:gap-[23.62px] flex-1">
+            <h3 className="w-full mt-[-0.79px] font-bold text-[#4e472c] text-base md:text-[17.3px] leading-normal [font-family:'Akatab',Helvetica] tracking-[0]">
               Products
             </h3>
 
@@ -190,29 +186,22 @@ export const Footer = (): React.ReactNode => {
           </div>
 
           {/* Newsletter section */}
-          <div className="flex flex-col items-start gap-4 md:gap-[23.62px] flex-1">
-            <h3 className="w-full mt-[-0.79px] font-medium text-[#4e472c] text-base md:text-[17.3px] leading-normal [font-family:'Akatab',Helvetica] tracking-[0]">
+          <div className="flex flex-col items-start gap-2 md:gap-[23.62px] flex-1">
+            <h3 className="w-full mt-[-0.79px] font-bold text-[#4e472c] text-base md:text-[17.3px] leading-normal [font-family:'Akatab',Helvetica] tracking-[0]">
               Subscribe to Newsletter
             </h3>
 
-            <div className="flex items-center justify-between px-3 md:px-[18.9px] py-2 md:py-[14.17px] w-full bg-[#dfe5e5] rounded-[9.45px]">
+            <div className="flex items-center justify-between px-3 md:px-[18.9px] py-3 md:py-[14.17px] w-full bg-[#dfe5e5] rounded-[9.45px]">
               <div className="relative w-fit mt-[-0.79px] [font-family:'Akatab',Helvetica] font-normal text-[#4e472c] text-xs md:text-[14.2px] tracking-[0] leading-[18px] md:leading-[21.3px] whitespace-nowrap">
                 Your Email
               </div>
-
-              <div className="relative w-[15px] h-[15px] md:w-[18.9px] md:h-[18.9px]">
-                <img
-                  className="absolute w-[12px] h-[10px] md:w-[15px] md:h-[13px] top-[2px] md:top-[3px] left-[1px] md:left-0.5"
-                  alt="Vector"
-                  src="https://c.animaapp.com/mdh9p58vtKPJ88/img/vector-4.svg"
-                />
-              </div>
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
             </div>
           </div>
         </div>
 
         {/* Copyright section */}
-        <div className="flex flex-col md:flex-row items-start justify-between px-4 md:px-[127.57px] py-6 md:py-[39.38px] w-full gap-4 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center justify-between px-4 md:px-[127.57px] py-6 md:py-[39.38px] w-full gap-4 md:gap-0">
           <div className="relative w-fit mt-[-0.79px] [font-family:'Akatab',Helvetica] font-normal text-[#4e472c] text-xs md:text-[14.2px] tracking-[0] leading-[18px] md:leading-[21.3px] whitespace-nowrap">
             © 2025 AAKAAR Studio. All rights reserved.
           </div>

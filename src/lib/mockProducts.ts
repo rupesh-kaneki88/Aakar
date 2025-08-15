@@ -1,5 +1,11 @@
 import { Product } from './types';
 
+const brands = ["Nazm", "Shahi Adaayein", "Veerangana", "Suhaagan Saaj", "Noor-e-Nazakat", "Mehfil-e-Mohabbat"];
+
+function getRandomBrand() {
+  return brands[Math.floor(Math.random() * brands.length)];
+}
+
 export const mockProducts: Product[] = [
   {
     id: 'elegant-straight-suit',
@@ -30,6 +36,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_01.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'anarkali-suit',
@@ -58,6 +65,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'anarkali',
     imageUrl: '/anarkali.jpg',
+    brand: getRandomBrand(),
   },
   {
     id: 'floral-straight-suit',
@@ -84,6 +92,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_02.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'embroidered-straight-suit',
@@ -110,6 +119,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_03.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'classic-straight-suit',
@@ -136,6 +146,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_04.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'modern-straight-suit',
@@ -162,6 +173,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_05.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'party-wear-straight-suit',
@@ -188,6 +200,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_06.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'casual-straight-suit',
@@ -214,6 +227,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_07.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'designer-straight-suit',
@@ -240,6 +254,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_08.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'simple-straight-suit',
@@ -266,6 +281,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'straight-suits',
     imageUrl: '/straight-suits/IMG_09.svg',
+    brand: getRandomBrand(),
   },
   {
     id: 'anarkali-gown',
@@ -292,6 +308,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'anarkalis',
     imageUrl: '/anarkali.jpg',
+    brand: getRandomBrand(),
   },
   {
     id: 'anarkali-dress',
@@ -318,6 +335,7 @@ export const mockProducts: Product[] = [
     ],
     category: 'anarkalis',
     imageUrl: '/anarkali.jpg',
+    brand: getRandomBrand(),
   },
   {
     id: 'anarkali-frock',
@@ -344,5 +362,85 @@ export const mockProducts: Product[] = [
     ],
     category: 'anarkalis',
     imageUrl: '/anarkali.jpg',
+    brand: getRandomBrand(),
+  },
+  {
+    id: 'amra-embroidery-anarkali',
+    name: 'Amra Embroidery - Anarkali',
+    description: 'A beautifully embroidered Anarkali suit with intricate details.',
+    price: '₹ 27,500',
+    mrpText: 'MRP inclusive of all taxes',
+    images: [
+      '/dress3.png',
+      '/dress3.png',
+      '/dress3.png',
+    ],
+    colors: [
+      { name: 'Mint Green', hex: '#98FF98' },
+    ],
+    sizes: ['S', 'M', 'L'],
+    deliveryInfo: 'Standard delivery: 3-5 business days.',
+    details: [
+      { title: 'Product Details', content: 'Detailed information about the product.' },
+      { title: 'Delivery & Returns', content: 'Information about delivery and return policies.' },
+      { title: 'Disclaimer', content: 'Important disclaimers.' },
+      { title: 'Customer Care', content: 'Contact information for customer support.' },
+    ],
+    category: 'anarkalis',
+    imageUrl: '/dress3.png',
+    brand: getRandomBrand(),
+  },
+  {
+    id: 'tissue-silk-anarkali',
+    name: 'Tissue Silk - Anarkali',
+    description: 'An elegant Tissue Silk Anarkali suit, perfect for special occasions.',
+    price: '₹ 23,500',
+    mrpText: 'MRP inclusive of all taxes',
+    images: [
+      '/dress2.png',
+      '/dress2.png',
+      '/dress2.png',
+    ],
+    colors: [
+      { name: 'Ivory', hex: '#FFFFF0' },
+    ],
+    sizes: ['M', 'L', 'XL'],
+    deliveryInfo: 'Standard delivery: 3-5 business days.',
+    details: [
+      { title: 'Product Details', content: 'Detailed information about the product.' },
+      { title: 'Delivery & Returns', content: 'Information about delivery and return policies.' },
+      { title: 'Disclaimer', content: 'Important disclaimers.' },
+      { title: 'Customer Care', content: 'Contact information for customer support.' },
+    ],
+    category: 'anarkalis',
+    imageUrl: '/dress2.png',
+    brand: getRandomBrand(),
+
+  },
+  {
+    id: 'chinon-crape-anarkali',
+    name: 'Chinon Crape - Anarkali',
+    description: 'A luxurious Chinon Crape Anarkali suit, exuding royalty.',
+    price: '₹ 43,500',
+    mrpText: 'MRP inclusive of all taxes',
+    images: [
+      '/dress.png',
+      '/dress.png',
+      '/dress.png',
+    ],
+    colors: [
+      { name: 'Peach', hex: '#FFDAB9' },
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    deliveryInfo: 'Standard delivery: 3-5 business days.',
+    details: [
+      { title: 'Product Details', content: 'Detailed information about the product.' },
+      { title: 'Delivery & Returns', content: 'Information about delivery and return policies.' },
+      { title: 'Disclaimer', content: 'Important disclaimers.' },
+      { title: 'Customer Care', content: 'Contact information for customer support.' },
+    ],
+    category: 'anarkalis',
+    imageUrl: '/dress.png',
+    brand: getRandomBrand(),
   },
 ];

@@ -71,7 +71,22 @@ export default function CategoryPage() {
           <Sidebar />
         </div>
         <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-          {products.map((product, index) => (
+          {products.length === 0 && !loading ? (
+            <div className="col-span-full flex flex-col items-center justify-center w-full h-[400px]">
+              <p className="text-center text-gray-400 text-2xl font-bold italic mb-4">
+                Stay tuned
+              </p>
+              <div className="relative h-[200px] w-[200px]">
+                <Image
+                  src="/empty-cart.webp"
+                  alt="empty cart image"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          ) : (
+            products.map((product, index) => (
             <Link key={product.id} href={`/product/${product.id}`} className="group" onClick={() => setLoading(true)}>
               <div className={`flex-1 ${index < products.length - 1 ? " md:border-b-0 " : ""}`}>
                 <div className="bg-white overflow-hidden flex flex-col gap-4 md:gap-[22.67px] p-4 md:p-[22.67px]">
@@ -124,7 +139,7 @@ export default function CategoryPage() {
                 </div>
               </div>
             </Link>
-          ))}
+          )))}
         </div>
       </div>
 

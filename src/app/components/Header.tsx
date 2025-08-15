@@ -1,7 +1,8 @@
 'use client'
 
+import React, { JSX, useState, useRef, useEffect } from "react";
 import { SearchIcon, ShoppingBagIcon, UserIcon, HeartIcon, FacebookIcon, TwitterIcon, LinkedinIcon, PinIcon, InstagramIcon, YoutubeIcon, MenuIcon, XIcon } from "lucide-react";
-import React, { JSX, useState } from "react";
+import { gsap } from "gsap";
 import { Button } from "@/app/components/ui/Button";
 import {
   NavigationMenu,
@@ -15,8 +16,19 @@ import { useLoading } from '@/app/providers/LoadingProvider';
 export const Header = (): JSX.Element => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const { getCartItemCount } = useCart();
   const { setIsLoading } = useLoading();
+
+  useEffect(() => {
+    if (sidebarRef.current) {
+      if (isSidebarOpen) {
+        gsap.to(sidebarRef.current, { x: 0, duration: 1, ease: "power3.out" });
+      } else {
+        gsap.to(sidebarRef.current, { x: "-100%", duration: 2, ease: "power3.in" });
+      }
+    }
+  }, [isSidebarOpen]);
 
   // Navigation menu items
   const navItems = [
@@ -160,15 +172,16 @@ export const Header = (): JSX.Element => {
             >
               <UserIcon className="!w-6 !h-6 text-[#4b3d34]" aria-hidden="true" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Open wishlist"
-              onClick={handleWishlistClick}
-              className="w-8 h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
-            >
-              <HeartIcon className="!w-6 !h-6 text-[#4b3d34]" aria-hidden="true" />
-            </Button>
+            <Link href="/wishlist" onClick={handleLinkClick}>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Open wishlist"
+                className="w-8 h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+              >
+                <HeartIcon className="!w-6 !h-6 text-[#4b3d34]" aria-hidden="true" />
+              </Button>
+            </Link>
           </div>
           <div className="flex items-center gap-1 md:gap-2">
             <Button
@@ -198,7 +211,7 @@ export const Header = (): JSX.Element => {
         />
         
         {/* Sidebar */}
-        <div className="absolute left-0 top-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out">
+        <div ref={sidebarRef} className="absolute left-0 top-0 h-full w-80 bg-white shadow-lg" style={{ transform: isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)' }}>
           <div className="flex flex-col h-full">
             {/* Header - Fixed */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">

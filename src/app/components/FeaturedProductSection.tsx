@@ -26,7 +26,7 @@ export const FeaturedProductsSection = (): React.JSX.Element => {
     <Card className="flex flex-col lg:w-[1206px] items-start rounded-[15.11px] overflow-hidden border-[1.51px] border-dashed border-neutral-800 mt-8 md:mt-[46px] mx-4 md:mx-[153px]">
       <CardContent className="flex flex-col md:flex-row items-center w-full p-0">
         <div className="flex flex-col md:w-[603px] items-start gap-4 md:gap-[22.67px] pt-8 md:pt-[75.56px] pb-6 md:pb-[60.45px] px-4 md:px-[60.45px] flex-1 border-b-[1.51px] md:border-r-[1.51px] md:border-b-0 [border-bottom-style:dashed] md:[border-right-style:dashed] border-neutral-800">
-          <h2 className=" font-extrabold text-[#4b3d34] text-xl md:text-[36.27px] leading-[normal] font-[Akatab] tracking-[0]">
+          <h2 className=" font-extrabold text-[#4b3d34] text-xl md:text-[36.27px] leading-[normal] font-[Akatab] tracking-[0] pr-9 md:pr-0">
             ELEVATE YOUR STYLE WITH AAKAAR STUDIO
           </h2>
           <p className="self-stretch font-semibold text-[#676665] text-xs md:text-[13.6px] leading-[18px] md:leading-[20.4px] font-[Akatab] tracking-[0]">

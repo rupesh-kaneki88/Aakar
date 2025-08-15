@@ -1,12 +1,18 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { mockProducts } from "@/lib/mockProducts";
+import { Product } from "@/lib/types";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
+import { ArrowRight, HeartIcon } from "lucide-react";
+import { useWishlist } from "@/app/providers/WishlistProvider";
 import { Card, CardContent } from "@/app/components/ui/Card";
+import Link from "next/link";
 
 export const CategoryExplorerSection = (): React.JSX.Element => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('Anarkalis');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const { addItem, removeItem, isInWishlist } = useWishlist();
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName); 
@@ -23,29 +29,32 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
   ];
 
   // Product data
-  const products = [
-    {
-      image: "https://c.animaapp.com/mdh9p58vtKPJ88/img/mask-group-3.png",
-      tag: "#ShahiAdaayein",
-      name: "Amra Embroidery - Anarkali",
-      color: "Mint Green",
-      price: "₹ 27,500",
-    },
-    {
-      image: "https://c.animaapp.com/mdh9p58vtKPJ88/img/mask-group-4.png",
-      tag: "#WeddingTrousseau",
-      name: "Tissue Silk - Anarkali",
-      color: "Ivory",
-      price: "₹ 23,500",
-    },
-    {
-      image: "https://c.animaapp.com/mdh9p58vtKPJ88/img/mask-group-5.png",
-      tag: "#Royalty",
-      name: "Chinon Crape - Anarkali",
-      color: "Peach",
-      price: "₹ 43,500",
-    },
-  ];
+  const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]);
+
+  const getRandomProducts = (category: string): Product[] => {
+    let filteredProducts: Product[] = [];
+    if (category === "All") {
+      filteredProducts = mockProducts;
+    } else {
+      filteredProducts = mockProducts.filter(
+        (product) => product.category.toLowerCase().replace(/ /g, "-") === category.toLowerCase().replace(/ /g, "-")
+      );
+    }
+
+    // Shuffle array and get 3 random products
+    for (let i = filteredProducts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [filteredProducts[i], filteredProducts[j]] = [
+        filteredProducts[j],
+        filteredProducts[i],
+      ];
+    }
+    return filteredProducts.slice(0, 3);
+  };
+
+  useEffect(() => {
+    setDisplayedProducts(getRandomProducts(selectedCategory));
+  }, [selectedCategory]);
 
   return (
     <section className="lg:w-[1206px] flex flex-col rounded-[15.11px] overflow-hidden border-[1.51px] border-dashed border-neutral-800 relative md:mx-[153px]">
@@ -93,58 +102,50 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
 
       {/* Products Grid */}
       <div className="flex flex-col md:flex-row w-full">
-        {products.map((product, index) => (
+        {displayedProducts.length === 0 ? (
+          <div className="w-full text-center py-8">
+            <h3 className="font-medium text-[#4e472c] text-sm md:text-[18.1px] leading-[20px] md:leading-[27.2px] [font-family:'Akatab',Helvetica] tracking-[0] mt-[-0.76px] italic">
+              No products available in this category.
+            </h3>
+          </div>
+        ) : (
+          displayedProducts.map((product, index) => (
           <React.Fragment key={index}>
             <div
-              className={`flex-1 p-4 md:p-[22.67px] ${index < products.length - 1 ? "border-b-[1.51px] md:border-r-[1.51px] md:border-b-0 border-dashed border-neutral-800" : ""}`}
+              className={`flex-1 p-4 md:p-[22.67px] ${index < displayedProducts.length - 1 ? "border-b-[1.51px] md:border-r-[1.51px] md:border-b-0 border-dashed border-neutral-800" : ""}`}
             >
               <Card className="border-none shadow-none">
                 <CardContent className="p-0 flex flex-col gap-4 md:gap-[22.67px]">
                   <img
-                    className="w-full h-[200px] md:h-[368px] object-cover"
+                    className="w-full h-auto md:h-[368px] object-cover rounded-none"
                     alt={product.name}
-                    src={product.image}
+                    src={product.imageUrl}
                   />
 
                   <div className="flex flex-col gap-3 md:gap-[15.11px]">
                     <div className="flex items-center justify-between w-full">
                       <Badge className="bg-[#4b3d34] text-white rounded-[75.56px] border-[0.76px] border-dashed px-2 md:px-[12.09px] py-1 md:py-[7.56px] h-auto">
                         <span className="[font-family:'Akatab',Helvetica] font-normal text-xs md:text-sm leading-[18px] md:leading-[21px] mt-[-0.76px]">
-                          {product.tag}
+                          {product.name}
                         </span>
                       </Badge>
 
-                      <Button className="bg-[#4b3d34] text-white rounded-[9.07px] border-[0.76px] border-none px-3 md:px-[18.14px] py-2 md:py-[13.6px] h-auto relative">
-                        <span className="[font-family:'Akatab',Helvetica] font-normal text-xs md:text-sm leading-[18px] md:leading-[21px] mt-[-0.76px] mr-1">
-                          Shop Now
-                        </span>
-                        <div className="relative w-[15px] h-[15px] md:w-[18.14px] md:h-[18.14px]">
-                          <img
-                            className="absolute w-2 h-2 md:w-3 md:h-3 top-[2px] md:top-[3px] left-[2px] md:left-[3px]"
-                            alt="Vector stroke"
-                            src="https://c.animaapp.com/mdh9p58vtKPJ88/img/vector-431--stroke-.svg"
-                          />
-                        </div>
-                        <img
-                          className="absolute w-[10px] h-[10px] md:w-[13px] md:h-[13px] top-0 left-0"
-                          alt="Shape"
-                          src="https://c.animaapp.com/mdh9p58vtKPJ88/img/shape-2.svg"
-                        />
-                        <img
-                          className="absolute w-[10px] h-[10px] md:w-[13px] md:h-[13px] top-0 right-0"
-                          alt="Shape"
-                          src="https://c.animaapp.com/mdh9p58vtKPJ88/img/shape-6.svg"
-                        />
-                        <img
-                          className="absolute w-[10px] h-[10px] md:w-[13px] md:h-[13px] bottom-0 right-0"
-                          alt="Shape"
-                          src="https://c.animaapp.com/mdh9p58vtKPJ88/img/shape.svg"
-                        />
-                        <img
-                          className="absolute w-[10px] h-[10px] md:w-[13px] md:h-[13px] bottom-0 left-0"
-                          alt="Shape"
-                          src="https://c.animaapp.com/mdh9p58vtKPJ88/img/shape-1.svg"
-                        />
+                      <Link href={`/product/${product.id}`} scroll={true}>
+                        <Button className="bg-[#4b3d34] text-white rounded-[9.07px] border-[0.76px] border-none px-3 md:px-[18.14px] py-2 md:py-[13.6px] h-auto relative">
+                          <span className="[font-family:'Akatab',Helvetica] font-normal text-xs md:text-sm leading-[18px] md:leading-[21px] mt-[-0.76px] mr-1">
+                            Shop Now
+                          </span>
+                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5 -rotate-45" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Add to wishlist"
+                        onClick={() => isInWishlist(product.id) ? removeItem(product.id) : addItem(product)}
+                        className="w-6 h-6 md:w-8 md:h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+                      >
+                        <HeartIcon className={`!w-5 !h-5 ${isInWishlist(product.id) ? 'text-red-500' : 'text-[#4b3d34]'}`} aria-hidden="true" />
                       </Button>
                     </div>
 
@@ -153,14 +154,14 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
                         {product.name}
                       </h3>
 
-                      <div className="flex flex-col md:flex-row items-start gap-2 md:gap-[15.11px]">
+                      <div className="flex md:flex-row items-start gap-8 md:gap-[15.11px]">
                         <div className="flex items-center gap-2 md:gap-[6.05px]">
                           <span className="[font-family:'Akatab',Helvetica] font-medium text-[#4b3d34] text-sm md:text-[15.1px] leading-[18px] md:leading-[22.7px] mt-[-0.76px]">
                             Color
                           </span>
                           <div className="w-[3.02px] h-[3.02px] bg-dark-30 rounded-[1.51px]" />
                           <span className="[font-family:'Akatab',Helvetica] font-medium text-[#4b3d34] text-sm md:text-[15.1px] leading-[18px] md:leading-[22.7px] mt-[-0.76px]">
-                            {product.color}
+                            {product.colors[0]?.name}
                           </span>
                         </div>
 
@@ -180,7 +181,7 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
               </Card>
             </div>
           </React.Fragment>
-        ))}
+        )))}
       </div>
     </section>
   );

@@ -6,6 +6,7 @@ import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { LoadingProvider } from "@/app/providers/LoadingProvider";
 import { CartProvider } from "@/app/providers/CartProvider";
+import { WishlistProvider } from "@/app/providers/WishlistProvider";
 import { Toaster } from "@/app/components/ui/Sonner";
 
 export const metadata: Metadata = {
@@ -35,10 +36,12 @@ export default function RootLayout({
         >
           <LoadingProvider>
             <CartProvider>
-              <Header />
-              {children}
-              <Footer />
-              <Toaster />
+              <WishlistProvider>
+                <Header />
+                {children}
+                <Footer />
+                <Toaster />
+              </WishlistProvider>
             </CartProvider>
           </LoadingProvider>
         </ThemeProvider>

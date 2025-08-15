@@ -10,6 +10,7 @@ import { Separator } from '@/app/components/ui/Separator';
 import Loading from '@/app/components/Loading';
 import { useLoading } from '@/app/providers/LoadingProvider';
 import { useCart } from '@/app/providers/CartProvider';
+import { useWishlist } from '@/app/providers/WishlistProvider';
 import { RecommendedProductsSection } from '@/app/components/RecommendedProductsSection';
 import { Product } from '@/lib/types';
 import { mockProducts } from '@/lib/mockProducts';
@@ -21,6 +22,7 @@ export default function ProductPage() {
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const { setIsLoading } = useLoading();
   const { addItem } = useCart();
+  const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
 
   useEffect(() => {
     setLoading(true);
@@ -29,6 +31,7 @@ export default function ProductPage() {
       setProduct(foundProduct || null);
       setLoading(false);
     }, 500);
+    window.scrollTo(0, 0); // Add this line to scroll to top
   }, [slug]);
 
   // Set initial selected color and size after product is loaded
@@ -179,8 +182,14 @@ export default function ProductPage() {
           {/* Action Buttons */}
           <div className="flex gap-4 mb-4">
             <Button className="bg-[#4B3D34] text-white px-8 py-2 rounded-md" onClick={handleAddToCart}>Add to Cart</Button>
-            <Button variant="outline" size="icon" className="border-[#4B3D34]">
-              <HeartIcon className="w-5 h-5 text-[#4B3D34]" />
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Add to wishlist"
+              onClick={() => product && (isInWishlist(product.id) ? removeWishlistItem(product.id) : addWishlistItem(product))}
+              className="border-[#4B3D34]"
+            >
+              <HeartIcon className={`w-5 h-5 ${product && isInWishlist(product.id) ? 'text-red-500' : 'text-[#4B3D34]'}`} />
             </Button>
           </div>
 
