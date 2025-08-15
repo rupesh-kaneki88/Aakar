@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { gsap } from 'gsap';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HeartIcon, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
@@ -11,6 +12,7 @@ import Loading from '@/app/components/Loading';
 import { useLoading } from '@/app/providers/LoadingProvider';
 import { useCart } from '@/app/providers/CartProvider';
 import { useWishlist } from '@/app/providers/WishlistProvider';
+import { toast } from 'sonner';
 import { RecommendedProductsSection } from '@/app/components/RecommendedProductsSection';
 import { Product } from '@/lib/types';
 import { mockProducts } from '@/lib/mockProducts';
@@ -186,10 +188,21 @@ export default function ProductPage() {
               variant="ghost"
               size="icon"
               aria-label="Add to wishlist"
-              onClick={() => product && (isInWishlist(product.id) ? removeWishlistItem(product.id) : addWishlistItem(product))}
-              className="border-[#4B3D34]"
+              onClick={() => product && (isInWishlist(product.id) ? (removeWishlistItem(product.id), toast.info(`${product.name} removed from wishlist.`)) : (addWishlistItem(product), toast.success(`${product.name} added to wishlist.`)))}
+              className="border-[#4B3D34] transition-all duration-200 ease-in-out transform hover:scale-110"
             >
-              <HeartIcon className={`w-5 h-5 ${product && isInWishlist(product.id) ? 'text-red-500' : 'text-[#4B3D34]'}`} />
+              <HeartIcon 
+                className="w-5 h-5"
+                ref={(el) => {
+                  if (el) {
+                    gsap.to(el, { 
+                      fill: product && isInWishlist(product.id) ? "#4b3d34" : "none", 
+                      duration: 0.3, 
+                      ease: "power2.out" 
+                    });
+                  }
+                }}
+              />
             </Button>
           </div>
 

@@ -2,9 +2,12 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Plus, Minus, Trash2, Heart } from 'lucide-react';
+import { Plus, Minus, Trash2, HeartIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
 import { CartItem } from '@/lib/types';
+import { useWishlist } from '@/app/providers/WishlistProvider';
+import { toast } from 'sonner';
+import { gsap } from 'gsap';
 
 interface CartItemDisplayProps {
   item: CartItem;
@@ -13,6 +16,18 @@ interface CartItemDisplayProps {
 }
 
 export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartItemDisplayProps) {
+  const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
+  const heartIconRef = React.useRef<SVGSVGElement>(null);
+
+  React.useEffect(() => {
+    if (heartIconRef.current) {
+      gsap.to(heartIconRef.current, { 
+        fill: isInWishlist(item.id) ? "#4b3d34" : "none", 
+        duration: 0.3, 
+        ease: "power2.out" 
+      });
+    }
+  }, [isInWishlist(item.id)]);
   return (
     <div className="flex items-center space-x-4 py-4">
       <div className="relative w-[135px] h-[200px] flex-shrink-0">
@@ -53,9 +68,25 @@ export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartIt
               <Plus className="h-4 w-4" />
             </Button>
           </div>
-          <div className="flex space-x-2">
-            <Button variant="ghost" size="icon" className="text-[#4B3D34]">
-              <Heart className="h-5 w-5" />
+          <div className="flex space-x-0 md:space-x-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-[#4B3D34] transition-all duration-200 ease-in-out transform hover:scale-110"
+              onClick={() => {
+                if (isInWishlist(item.id)) {
+                  removeWishlistItem(item.id);
+                  toast.info(`${item.name} removed from wishlist.`);
+                } else {
+                  addWishlistItem(item);
+                  toast.success(`${item.name} added to wishlist.`);
+                }
+              }}
+            >
+              <HeartIcon 
+                className="h-5 w-5"
+                ref={heartIconRef}
+              />
             </Button>
             <Button variant="ghost" size="icon" className="text-[#4B3D34]"
               onClick={() => onRemoveItem(item.id, item.selectedColor, item.selectedSize)}

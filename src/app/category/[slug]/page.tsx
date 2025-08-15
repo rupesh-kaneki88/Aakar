@@ -4,6 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { HeartIcon } from 'lucide-react';
+import { toast } from 'sonner';
+import { gsap } from 'gsap';
+import { useWishlist } from '@/app/providers/WishlistProvider';
 import Loading from '@/app/components/Loading';
 import Sidebar from '@/app/components/Sidebar';
 import Link from 'next/link';
@@ -21,6 +24,8 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
+
+  const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
 
   const fetchProducts = useCallback(async (currentPage: number) => {
     setLoading(true);
@@ -87,25 +92,28 @@ export default function CategoryPage() {
             </div>
           ) : (
             products.map((product, index) => (
-            <Link key={product.id} href={`/product/${product.id}`} className="group" onClick={() => setLoading(true)}>
               <div className={`flex-1 ${index < products.length - 1 ? " md:border-b-0 " : ""}`}>
                 <div className="bg-white overflow-hidden flex flex-col gap-4 md:gap-[22.67px] p-4 md:p-[22.67px]">
                   <div className="relative w-full h-[300px] md:h-[468px] overflow-hidden">
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.name}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-t-lg"
-                    />
+                    <Link key={product.id} href={`/product/${product.id}`} className="group" onClick={() => setLoading(true)}>
+                      <Image
+                        src={product.imageUrl}
+                        alt={product.name}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-t-lg"
+                        />
+                    </Link>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
                       <p className="text-center">Take a look</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 md:gap-[10.58px]">
-                    <h3 className="font-medium text-[#4e472c] text-sm md:text-[18.1px] leading-[20px] md:leading-[27.2px] [font-family:'Akatab',Helvetica] tracking-[0] mt-[-0.76px]">
-                      {product.name}
-                    </h3>
+                    <Link key={product.id} href={`/product/${product.id}`} className="group" onClick={() => setLoading(true)}>
+                      <h3 className="font-medium text-[#4e472c] text-sm md:text-[18.1px] leading-[20px] md:leading-[27.2px] [font-family:'Akatab',Helvetica] tracking-[0] mt-[-0.76px]">
+                        {product.name}
+                      </h3>
+                    </Link>
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-2 md:gap-[6.05px]">
                         <span className="[font-family:'Akatab',Helvetica] font-normal text-[#81807E] text-xs md:text-[13.6px] leading-[15px] md:leading-[20.4px]">
@@ -129,16 +137,36 @@ export default function CategoryPage() {
                         variant="ghost"
                         size="icon"
                         aria-label="Add to wishlist"
-                        onClick={() => alert(`Added ${product.name} to wishlist!`)}
-                        className="w-6 h-6 md:w-8 md:h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent navigating to product page
+                          if (isInWishlist(product.id)) {
+                            removeWishlistItem(product.id);
+                            toast.info(`${product.name} removed from wishlist.`);
+                          } else {
+                            addWishlistItem(product);
+                            toast.success(`${product.name} added to wishlist.`);
+                          }
+                        }}
+                        className="w-6 h-6 md:w-8 md:h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200 ease-in-out transform hover:scale-110"
                       >
-                        <HeartIcon className="!w-5 !h-5 text-[#4b3d34]" aria-hidden="true" />
+                        <HeartIcon 
+                          className="!w-5 !h-5"
+                          aria-hidden="true"
+                          ref={(el) => {
+                            if (el) {
+                              gsap.to(el, { 
+                                fill: isInWishlist(product.id) ? "#4b3d34" : "none", 
+                                duration: 0.3, 
+                                ease: "power2.out" 
+                              });
+                            }
+                          }}
+                        />
                       </Button>
                     </div>
                   </div>
                 </div>
               </div>
-            </Link>
           )))}
         </div>
       </div>

@@ -9,6 +9,7 @@ import { ArrowRight, HeartIcon } from "lucide-react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { useWishlist } from "@/app/providers/WishlistProvider";
+import { toast } from "sonner";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -266,10 +267,30 @@ export const Home = (): JSX.Element => {
                           variant="ghost"
                           size="icon"
                           aria-label="Add to wishlist"
-                          onClick={() => isInWishlist(product.id) ? removeItem(product.id) : addItem(product)}
-                          className="w-6 h-6 md:w-8 md:h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+                          onClick={() => {
+                            if (isInWishlist(product.id)) {
+                              removeItem(product.id);
+                              toast.info(`${product.name} removed from wishlist.`);
+                            } else {
+                              addItem(product);
+                              toast.success(`${product.name} added to wishlist.`);
+                            }
+                          }}
+                          className="w-6 h-6 md:w-8 md:h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary transition-all duration-200 ease-in-out transform hover:scale-110"
                         >
-                          <HeartIcon className={`!w-5 !h-5 ${isInWishlist(product.id) ? 'text-red-500' : 'text-[#4b3d34]'}`} aria-hidden="true" />
+                          <HeartIcon 
+                            className="!w-5 !h-5"
+                            aria-hidden="true"
+                            ref={(el) => {
+                              if (el) {
+                                gsap.to(el, { 
+                                  fill: isInWishlist(product.id) ? "#4b3d34" : "none", 
+                                  duration: 0.3, 
+                                  ease: "power2.out" 
+                                });
+                              }
+                            }}
+                          />
                         </Button>
                       </div>
 

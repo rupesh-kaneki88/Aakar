@@ -9,10 +9,20 @@ import { Product } from '@/lib/types';
 import { useWishlist } from '@/app/providers/WishlistProvider';
 import { useCart } from '@/app/providers/CartProvider';
 import Sidebar from '@/app/components/Sidebar';
+import Loading from '@/app/components/Loading';
 
 export default function WishlistPage() {
   const { wishlistItems, removeItem } = useWishlist();
   const { addItem: addCartItem } = useCart();
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading
+    setTimeout(() => {
+      setLoading(false);
+    }, 500); // Adjust delay as needed
+  }, []);
 
   const handleRemoveFromWishlist = (id: string) => {
     removeItem(id);
@@ -21,6 +31,10 @@ export default function WishlistPage() {
   const handleAddToCartFromWishlist = (product: Product) => {
     addCartItem(product, 1, product.colors[0]?.name || '', product.sizes[0] || '');
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="bg-[#F6F7F8] flex flex-col rounded-[15.11px] overflow-hidden overflow-x-hidden relative md:mx-[53px] mx-auto px-4 py-4">

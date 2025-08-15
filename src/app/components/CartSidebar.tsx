@@ -2,14 +2,17 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { X, Plus, Minus, Trash2, Heart } from 'lucide-react';
+import { X, Plus, Minus, Trash2, HeartIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
 import Link from 'next/link';
 import { useCart } from '@/app/providers/CartProvider';
+import { useWishlist } from '@/app/providers/WishlistProvider';
 import { CartSidebarProps } from '@/lib/types';
+import { toast } from 'sonner';
 
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   const { cartItems, removeItem, updateQuantity, getCartTotal } = useCart();
+  const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
 
   const handleQuantityChange = (id: string, selectedColor: string, selectedSize: string, delta: number) => {
     const item = cartItems.find(i => i.id === id && i.selectedColor === selectedColor && i.selectedSize === selectedSize);
@@ -88,8 +91,21 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       </Button>
                     </div>
                     <div className="flex space-x-2">
-                      <Button variant="ghost" size="icon" className="text-[#4B3D34]">
-                        <Heart className="h-5 w-5" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-[#4B3D34] transition-all duration-200 ease-in-out transform hover:scale-110"
+                        onClick={() => {
+                          if (isInWishlist(item.id)) {
+                            removeWishlistItem(item.id);
+                            toast.info(`${item.name} removed from wishlist.`);
+                          } else {
+                            addWishlistItem(item);
+                            toast.success(`${item.name} added to wishlist.`);
+                          }
+                        }}
+                      >
+                        <HeartIcon className={`h-5 w-5 ${isInWishlist(item.id) ? 'fill-[#4b3d34]' : 'fill-none'}`} />
                       </Button>
                       <Button variant="ghost" size="icon" className="text-[#4B3D34]"
                         onClick={() => handleRemoveItem(item.id, item.selectedColor, item.selectedSize)}
