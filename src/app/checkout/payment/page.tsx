@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { ReadOnlyCartItem } from '@/app/components/ReadOnlyCartItem';
 import { Button } from '@/app/components/ui/Button';
-import Link from 'next/link';
+
 import { useEffect } from 'react';
 import Loading from '@/app/components/Loading';
 import { useLoading } from '@/app/providers/LoadingProvider';
 import { useCart } from '@/app/providers/CartProvider';
+import { CartItem } from '@/lib/types';
 
 export default function PaymentPage() {
   const { isLoading, setIsLoading } = useLoading();
@@ -108,7 +109,7 @@ export default function PaymentPage() {
             {cartItems.length === 0 ? (
               <p className="text-center text-gray-500 mt-8">Your cart is empty.</p>
             ) : (
-              cartItems.map(item => (
+              cartItems.map((item: CartItem) => (
                 <ReadOnlyCartItem key={item.id} item={item} />
               ))
             )}

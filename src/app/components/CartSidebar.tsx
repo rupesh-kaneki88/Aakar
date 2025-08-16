@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { X, Plus, Minus, Trash2, HeartIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
 import Link from 'next/link';
 import { useCart } from '@/app/providers/CartProvider';
 import { useWishlist } from '@/app/providers/WishlistProvider';
-import { CartSidebarProps } from '@/lib/types';
+import { CartSidebarProps, CartItem } from '@/lib/types';
 import { toast } from 'sonner';
 
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
@@ -15,7 +15,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
 
   const handleQuantityChange = (id: string, selectedColor: string, selectedSize: string, delta: number) => {
-    const item = cartItems.find(i => i.id === id && i.selectedColor === selectedColor && i.selectedSize === selectedSize);
+    const item = cartItems.find((i: CartItem) => i.id === id && i.selectedColor === selectedColor && i.selectedSize === selectedSize);
     if (item) {
       updateQuantity(id, selectedColor, selectedSize, item.quantity + delta);
     }
@@ -51,7 +51,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
           {cartItems.length === 0 ? (
             <p className="text-center text-gray-500 mt-8">Your bag is empty.</p>
           ) : (
-            cartItems.map(item => (
+            cartItems.map((item: CartItem) => (
               <div key={`${item.id}-${item.selectedColor}-${item.selectedSize}`} className="flex items-center space-x-4 py-4 mb-8">
                 <div className="relative w-[135px] h-[200px] flex-shrink-0">
                   <Image

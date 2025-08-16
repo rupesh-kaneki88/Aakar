@@ -1,5 +1,6 @@
 'use client'
 import React from "react";
+import Image from "next/image";
 import { Separator } from "@/app/components/ui/Separator";
 import { Button } from "@/app/components/ui/Button";
 import { FacebookIcon, TwitterIcon, LinkedinIcon, PinIcon, InstagramIcon, YoutubeIcon, ArrowRight } from "lucide-react";
@@ -61,7 +62,9 @@ export const Footer = (): React.ReactNode => {
                 {category.name}
               </div>
               {index % categories.length !== categories.length - 1 && (
-                <img
+                <Image
+                  width={47}
+                  height={47}
                   className="relative w-[30px] h-[30px] md:w-[47.25px] md:h-[47.25px]"
                   alt="Abstract design"
                   src={category.image}
@@ -78,7 +81,7 @@ export const Footer = (): React.ReactNode => {
       <div className="w-full h-[66px] flex items-center justify-between px-4 md:px-44 bg-[#ffffff] md:h-66 border-t-[1.57px] border-dashed border-neutral-800">
         {/* Logo on the left */}
         <div className="flex items-center">
-          <img src="/aakar_studio_logo.png" alt="Aakar Studio Logo" className="h-14 md:h-34" />
+          <Image width={100} height={100} src="/aakar_studio_logo.png" alt="Aakar Studio Logo" className="h-14 md:h-30 md:w-60" />
         </div>
 
         {/* Social Media Icons on the right */}

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { mockProducts } from "@/lib/mockProducts";
 import gsap from "gsap";
 import { Product } from "@/lib/types";
@@ -72,7 +73,7 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 md:gap-[10.58px]">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <Button
               key={category.name}
               variant={category.selected ? "default" : "outline"}
@@ -95,7 +96,9 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
           ))}
         </div>
 
-        <img
+        <Image
+          width={419}
+          height={428}
           className="absolute w-[200px] h-[204px] md:w-[419px] md:h-[428px] top-[-38px] md:top-[-76px] right-[-180px] opacity-50 md:opacity-100"
           alt="Abstract design"
           src="https://c.animaapp.com/mdh9p58vtKPJ88/img/abstract-design-2.svg"
@@ -118,8 +121,10 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
             >
               <Card className="border-none shadow-none">
                 <CardContent className="p-0 flex flex-col gap-4 md:gap-[22.67px]">
-                  <img
-                    className="w-full h-auto md:h-[368px] object-cover rounded-none"
+                  <Image
+                    width={368}
+                    height={368}
+                    className="w-full h-auto md:h-[448px] object-cover rounded-none"
                     alt={product.name}
                     src={product.imageUrl}
                   />

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Loading from '@/app/components/Loading';
 import { CartItemDisplay } from '@/app/components/CartItemDisplay';
 import { Button } from '@/app/components/ui/Button';
@@ -8,13 +8,14 @@ import { Input } from '@/app/components/ui/Input';
 import Link from 'next/link';
 import { useLoading } from '@/app/providers/LoadingProvider';
 import { useCart } from '@/app/providers/CartProvider';
+import { CartItem } from '@/lib/types';
 
 export default function ShoppingCartPage() {
   const { isLoading, setIsLoading } = useLoading();
   const { cartItems, removeItem, updateQuantity, getCartTotal } = useCart();
 
   const handleQuantityChange = (id: string, selectedColor: string, selectedSize: string, delta: number) => {
-    const item = cartItems.find(i => i.id === id && i.selectedColor === selectedColor && i.selectedSize === selectedSize);
+    const item = cartItems.find((i: CartItem) => i.id === id && i.selectedColor === selectedColor && i.selectedSize === selectedSize);
     if (item) {
       updateQuantity(id, selectedColor, selectedSize, item.quantity + delta);
     }
@@ -83,7 +84,7 @@ export default function ShoppingCartPage() {
               {cartItems.length === 0 ? (
                 <p className="text-center text-gray-500 mt-8">Your cart is empty.</p>
               ) : (
-                cartItems.map(item => (
+                cartItems.map((item: CartItem) => (
                   <CartItemDisplay
                     key={`${item.id}-${item.selectedColor}-${item.selectedSize}`}
                     item={item}

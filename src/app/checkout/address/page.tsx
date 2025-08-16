@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import Loading from '@/app/components/Loading';
 import { useLoading } from '@/app/providers/LoadingProvider';
 import { useCart } from '@/app/providers/CartProvider';
+import { CartItem } from '@/lib/types';
 
 export default function ShippingAddressPage() {
   const router = useRouter();
@@ -299,7 +300,7 @@ export default function ShippingAddressPage() {
             {cartItems.length === 0 ? (
               <p className="text-center text-gray-500 mt-8">Your cart is empty.</p>
             ) : (
-              cartItems.map(item => (
+              cartItems.map((item: CartItem) => (
                 <ReadOnlyCartItem key={item.id} item={item} />
               ))
             )}

@@ -19,15 +19,17 @@ export function CartItemDisplay({ item, onQuantityChange, onRemoveItem }: CartIt
   const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
   const heartIconRef = React.useRef<SVGSVGElement>(null);
 
+  const isItemInWishlist = isInWishlist(item.id);
+
   React.useEffect(() => {
     if (heartIconRef.current) {
       gsap.to(heartIconRef.current, { 
-        fill: isInWishlist(item.id) ? "#4b3d34" : "none", 
+        fill: isItemInWishlist ? "#4b3d34" : "none", 
         duration: 0.3, 
         ease: "power2.out" 
       });
     }
-  }, [isInWishlist(item.id)]);
+  }, [isItemInWishlist]);
   return (
     <div className="flex items-center space-x-4 py-4">
       <div className="relative w-[135px] h-[200px] flex-shrink-0">

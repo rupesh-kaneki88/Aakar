@@ -29,7 +29,7 @@ export default function Sidebar() {
   };
 
   const filters = (
-    <div className="p-4">
+    <div className="p-4 bg-white">
       <h2 className="text-lg font-bold mb-4">Filters</h2>
       <Separator />
       <div className="mt-4">
@@ -107,7 +107,7 @@ export default function Sidebar() {
   return (
     <>
       <div className="hidden lg:block w-full">{filters}</div>
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white p-4 border-t">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white p-4 border-t z-50">
         <Sheet>
           <SheetTrigger asChild>
             <Button className="w-full">Filters</Button>

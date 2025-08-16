@@ -92,7 +92,7 @@ export default function CategoryPage() {
             </div>
           ) : (
             products.map((product, index) => (
-              <div className={`flex-1 ${index < products.length - 1 ? " md:border-b-0 " : ""}`}>
+              <div key={product.id} className={`flex-1 ${index < products.length - 1 ? " md:border-b-0 " : ""}`}>
                 <div className="bg-white overflow-hidden flex flex-col gap-4 md:gap-[22.67px] p-4 md:p-[22.67px]">
                   <div className="relative w-full h-[300px] md:h-[468px] overflow-hidden">
                     <Link key={product.id} href={`/product/${product.id}`} className="group" onClick={() => setLoading(true)}>

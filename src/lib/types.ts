@@ -27,10 +27,6 @@ export interface CartItem extends Product {
   selectedSize: string;
 }
 
-export interface WishlistItem extends Product {
-  // Wishlist items are just products, no quantity or specific selections needed
-}
-
 export interface CartContextType {
   cartItems: CartItem[];
   addItem: (item: Product, quantity: number, selectedColor: string, selectedSize: string) => void;
@@ -41,7 +37,7 @@ export interface CartContextType {
 }
 
 export interface WishlistContextType {
-  wishlistItems: WishlistItem[];
+  wishlistItems: Product[];
   addItem: (item: Product) => void;
   removeItem: (id: string) => void;
   isInWishlist: (id: string) => boolean;

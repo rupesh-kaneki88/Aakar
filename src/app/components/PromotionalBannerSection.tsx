@@ -28,7 +28,7 @@ export const PromotionalBannerSection = (): React.JSX.Element => {
   ];
 
   useEffect(() => {
-    let filtered = mockProducts.filter(product => product.brand === selectedCategory);
+    const filtered = mockProducts.filter(product => product.brand === selectedCategory);
     
     // If less than 3 products, fill with random ones
     if (filtered.length < 3) {
@@ -103,7 +103,7 @@ export const PromotionalBannerSection = (): React.JSX.Element => {
             >
               <CardContent className="flex flex-col items-start gap-4 md:gap-[22.67px] p-4 md:p-[22.67px]">
                 <img
-                  className="w-full h-auto md:h-[368px] object-cover"
+                  className="w-full h-auto md:h-[448px] object-cover"
                   alt={product.name}
                   src={product.imageUrl}
                 />

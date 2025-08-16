@@ -1,13 +1,13 @@
 'use client';
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { Product, WishlistItem, WishlistContextType } from '@/lib/types';
+import { Product, WishlistContextType } from '@/lib/types';
 import { toast } from 'sonner';
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
+  const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
 
   // Load wishlist from localStorage on initial render
   useEffect(() => {
