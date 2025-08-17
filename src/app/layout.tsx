@@ -7,6 +7,7 @@ import { Footer } from "@/app/components/Footer";
 import { LoadingProvider } from "@/app/providers/LoadingProvider";
 import { CartProvider } from "@/app/providers/CartProvider";
 import { WishlistProvider } from "@/app/providers/WishlistProvider";
+import { UserProvider } from "@/app/providers/UserProvider";
 import { Toaster } from "@/app/components/ui/Sonner";
 
 export const metadata: Metadata = {
@@ -35,14 +36,16 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LoadingProvider>
-            <CartProvider>
-              <WishlistProvider>
-                <Header />
-                {children}
-                <Footer />
-                <Toaster />
-              </WishlistProvider>
-            </CartProvider>
+            <UserProvider>
+              <CartProvider>
+                <WishlistProvider>
+                  <Header />
+                  {children}
+                  <Footer />
+                  <Toaster />
+                </WishlistProvider>
+              </CartProvider>
+            </UserProvider>
           </LoadingProvider>
         </ThemeProvider>
       </body>

@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { CartSidebar } from '@/app/components/CartSidebar';
 import { useCart } from '@/app/providers/CartProvider';
 import { useLoading } from '@/app/providers/LoadingProvider';
+import { useUser } from '@/app/providers/UserProvider';
 
 export const Header = (): JSX.Element => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,6 +20,7 @@ export const Header = (): JSX.Element => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const { getCartItemCount } = useCart();
   const { setIsLoading } = useLoading();
+  const { user } = useUser();
 
   useEffect(() => {
     if (sidebarRef.current) {
@@ -47,12 +49,6 @@ export const Header = (): JSX.Element => {
   const handleSearchClick = () => {
     alert('Search functionality coming soon!');
   };
-  const handleUserClick = () => {
-    alert('User menu coming soon!');
-  };
-  const handleWishlistClick = () => {
-    alert('Wishlist functionality coming soon!');
-  }
   const handleCartClick = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -163,15 +159,16 @@ export const Header = (): JSX.Element => {
             >
               <SearchIcon className="!w-6 !h-6 text-[#4b3d34]" aria-hidden="true" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Open user menu"
-              onClick={handleUserClick}
-              className="w-8 h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
-            >
-              <UserIcon className="!w-6 !h-6 text-[#4b3d34]" aria-hidden="true" />
-            </Button>
+            <Link href={user ? "/profile" : "/login"} onClick={handleLinkClick}>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={user ? "Open user profile" : "Login or sign up"}
+                className="w-8 h-8 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+              >
+                <UserIcon className="!w-6 !h-6 text-[#4b3d34]" aria-hidden="true" />
+              </Button>
+            </Link>
             <Link href="/wishlist" onClick={handleLinkClick}>
               <Button
                 variant="ghost"
@@ -246,17 +243,18 @@ export const Header = (): JSX.Element => {
                   <SearchIcon className="!w-5 !h-5 mr-3 text-[#4b3d34]" />
                   Search
                 </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-left"
-                  onClick={() => {
-                    handleUserClick();
-                    toggleSidebar();
-                  }}
-                >
-                  <UserIcon className="!w-5 !h-5 mr-3 text-[#4b3d34]" />
-                  Account
-                </Button>
+                <Link href={user ? "/profile" : "/login"}>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-left"
+                    onClick={() => {
+                      toggleSidebar();
+                    }}
+                  >
+                    <UserIcon className="!w-5 !h-5 mr-3 text-[#4b3d34]" />
+                    {user ? "Account" : "Login / Sign Up"}
+                  </Button>
+                </Link>
                 <Link href={'/wishlist'}>
                   <Button
                     variant="ghost"

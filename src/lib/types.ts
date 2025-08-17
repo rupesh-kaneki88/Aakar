@@ -47,3 +47,17 @@ export interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export interface Address {
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  address: Address;
+}
