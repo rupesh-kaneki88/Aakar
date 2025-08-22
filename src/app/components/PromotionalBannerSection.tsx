@@ -5,45 +5,54 @@ import React, { useState, useEffect } from "react";
 import { Badge } from "@/app/components/ui/Badge";
 import { Button } from "@/app/components/ui/Button";
 import { Card, CardContent } from "@/app/components/ui/Card";
-import { mockProducts } from "@/lib/mockProducts";
+import { getShopifyProducts, getShopifyVendors } from "@/lib/shopifyProducts";
 import { Product } from "@/lib/types";
 import Link from "next/link";
 
 export const PromotionalBannerSection = (): React.JSX.Element => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('Veerangana');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All'); // Default to 'All' or a specific initial vendor
+  const [vendorCategories, setVendorCategories] = useState<{ name: string; active: boolean }[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]);
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName); 
   };
 
-  // Collection categories data
-  const collectionCategories = [
-    { name: "Nazm", active: selectedCategory === "Nazm" },
-    { name: "Shahi Adaayein", active: selectedCategory === "Shahi Adaayein" },
-    { name: "Veerangana", active: selectedCategory === "Veerangana" },
-    { name: "Suhaagan Saaj", active: selectedCategory === "Suhaagan Saaj" },
-    { name: "Noor-e-Nazakat", active: selectedCategory === "Noor-e-Nazakat" },
-    { name: "Mehfil-e-Mohabbat", active: selectedCategory === "Mehfil-e-Mohabbat" },
-  ];
+  useEffect(() => {
+    async function fetchInitialData() {
+      const shopifyVendors = await getShopifyVendors();
+      const formattedVendors = [
+        { name: "All", active: false }, // Add an 'All' option
+        ...shopifyVendors.map(vendor => ({ name: vendor, active: false }))
+      ];
+      setVendorCategories(formattedVendors.map(cat => ({ ...cat, active: cat.name === selectedCategory })));
+      // console.log("Vendor Categories:", formattedVendors);
+
+      const shopifyProducts = await getShopifyProducts(250); // Fetch more products to allow filtering
+      setAllProducts(shopifyProducts);
+      // console.log("All Products:", shopifyProducts);
+    }
+    fetchInitialData();
+  }, []);
 
   useEffect(() => {
-    const filtered = mockProducts.filter(product => product.brand === selectedCategory);
-    
-    // If less than 3 products, fill with random ones
-    if (filtered.length < 3) {
-      const remainingSlots = 3 - filtered.length;
-      const otherProducts = mockProducts.filter(product => product.brand !== selectedCategory);
-      const shuffledOtherProducts = [...otherProducts].sort(() => 0.5 - Math.random());
-      
-      for (let i = 0; i < remainingSlots; i++) {
-        if (shuffledOtherProducts[i]) {
-          filtered.push(shuffledOtherProducts[i]);
-        }
-      }
+    setVendorCategories(prevCategories => 
+      prevCategories.map(cat => ({ ...cat, active: cat.name === selectedCategory }))
+    );
+
+    // console.log("Selected Category:", selectedCategory);
+    if (selectedCategory === "All") {
+      setDisplayedProducts(allProducts.slice(0, 3)); // Display 3 random products from all
+    } else {
+      const filtered = allProducts.filter(product => {
+        // console.log(`Comparing: '${product.vendor?.toLowerCase()}' with '${selectedCategory.toLowerCase()}'`);
+        return product.vendor && product.vendor.toLowerCase() === selectedCategory.toLowerCase();
+      });
+      // console.log("Filtered Products:", filtered);
+      setDisplayedProducts(filtered.slice(0, 3)); // Display 3 random products from filtered
     }
-    setDisplayedProducts(filtered.slice(0, 3)); // Ensure exactly 3 are displayed
-  }, [selectedCategory]);
+  }, [selectedCategory, allProducts]);
 
   return (
     <section className="flex flex-col lg:w-[1206px] items-start rounded-[15.11px] overflow-hidden border-[1.51px] border-dashed border-neutral-800 md:mx-[153px]">
@@ -59,14 +68,14 @@ export const PromotionalBannerSection = (): React.JSX.Element => {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 md:gap-[10.58px]">
-          {collectionCategories.map((category, index) => (
+          {vendorCategories.map((category, index) => (
             <Button
               key={category.name}
               variant={category.active ? "default" : "outline"}
               className={`h-auto px-3 md:px-[18.14px] py-2 md:py-[13.6px] rounded-[9.07px] border-[0.76px] border-dashed ${
                 category.active
-                  ? "bg-[#c2b4a2] hover:bg-[#c2b4a2] border-none"
-                  : "bg-transparent border-[#333333] hover:bg-transparent"
+                  ? "bg-[#C2B4A3]"
+                  : "bg-transparent border-[0.76px] border-dashed border-[#333333]"
               }`}
               aria-pressed={category.active}
               onClick={() => handleCategoryClick(category.name)}
@@ -112,7 +121,7 @@ export const PromotionalBannerSection = (): React.JSX.Element => {
                   <div className="flex items-center justify-between w-full">
                     <Badge className="px-2 md:px-[12.09px] py-1 md:py-[7.56px] bg-[#4b3d34] rounded-[75.56px] border-[0.76px] border-dashed hover:bg-[#4b3d34]">
                       <span className="font-normal text-white text-xs md:text-sm leading-[18px] md:leading-[21px]">
-                        {product.brand}
+                        {product.tags[0]}
                       </span>
                     </Badge>
 

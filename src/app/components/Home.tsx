@@ -1,7 +1,7 @@
 'use client';
 
 import React, { JSX, useState, useEffect, useRef } from "react";
-import { mockProducts } from "@/lib/mockProducts";
+import { getShopifyProducts } from "@/lib/shopifyProducts";
 import { Product } from "@/lib/types";
 import { Button } from "@/app/components/ui/Button";
 import { Badge } from "@/app/components/ui/Badge";
@@ -83,13 +83,12 @@ export const Home = (): JSX.Element => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const getRandomProducts = (): Product[] => {
-    const shuffled = [...mockProducts].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3); // Get 3 random products
-  };
-
   useEffect(() => {
-    setDisplayedProducts(getRandomProducts());
+    async function fetchProducts() {
+      const products = await getShopifyProducts(3); // Fetch 3 products from Shopify
+      setDisplayedProducts(products);
+    }
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -251,11 +250,11 @@ export const Home = (): JSX.Element => {
                       <div className="flex items-center justify-between w-full">
                         <Badge className="bg-[#4b3d34] text-white rounded-[75.56px] border-[0.76px] border-dashed px-2 md:px-[12.09px] py-2 md:py-[7.56px] h-auto">
                           <span className="font-normal text-xs md:text-sm leading-[18px] md:leading-[21px] mt-[-0.76px]">
-                            {product.name}
+                            {product.tags}
                           </span>
                         </Badge>
 
-                        <Link href={`/product/${product.id}`} scroll={true}>
+                        <Link href={`/product/${product.handle}`} scroll={true}>
                           <Button className="bg-[#4b3d34] text-white rounded-[9.07px] border-[0.76px] border-dashed px-3 md:px-[18.14px] py-2 md:py-[13.6px] h-auto mr-6 md:mr-1 relative">
                             <span className="font-normal text-xs md:text-sm leading-[18px] md:leading-[21px] mt-[-0.76px] mr-1">
                               Shop Now

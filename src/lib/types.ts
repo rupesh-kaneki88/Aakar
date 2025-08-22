@@ -8,10 +8,9 @@ export interface Product {
   name: string;
   imageUrl: string;
   price: string;
-  category: string;
-  brand?: string;
-  color?: string;
-  size?: string;
+  collections: string[]; // Changed from category
+  tags: string[]; // Added tags
+  vendor?: string;
   description: string;
   mrpText: string;
   images: string[];
@@ -19,6 +18,8 @@ export interface Product {
   sizes: string[];
   deliveryInfo: string;
   details: { title: string; content: string }[];
+  merchandiseId?: string; // Added for Shopify variant ID
+  handle: string; // Added for product URL slug
 }
 
 export interface CartItem extends Product {

@@ -15,7 +15,7 @@ import { useWishlist } from '@/app/providers/WishlistProvider';
 import { toast } from 'sonner';
 import { RecommendedProductsSection } from '@/app/components/RecommendedProductsSection';
 import { Product } from '@/lib/types';
-import { mockProducts } from '@/lib/mockProducts';
+import { getShopifyProductByHandle } from '@/lib/shopifyProducts';
 
 export default function ProductPage() {
   const { slug } = useParams();
@@ -27,14 +27,17 @@ export default function ProductPage() {
   const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
 
   useEffect(() => {
-    setLoading(true);
-    const foundProduct = mockProducts.find(p => p.id === slug);
-    setTimeout(() => {
-      setProduct(foundProduct || null);
+    async function fetchProduct() {
+      setLoading(true);
+      setIsLoading(true);
+      const fetchedProduct = await getShopifyProductByHandle(slug as string);
+      setProduct(fetchedProduct);
       setLoading(false);
-    }, 500);
-    window.scrollTo(0, 0); // Add this line to scroll to top
-  }, [slug]);
+      setIsLoading(false);
+      window.scrollTo(0, 0);
+    }
+    fetchProduct();
+  }, [slug, setIsLoading]);
 
   // Set initial selected color and size after product is loaded
   useEffect(() => {
@@ -142,6 +145,13 @@ export default function ProductPage() {
         {/* Right: Product Details */}
         <div className="w-full lg:w-6/12 p-4 lg:h-full">
           <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-[#4F482C] mb-2">{product.name}</h1>
+          <p className="text-xl font-semibold text-gray-700 mb-1">Vendor: {product.vendor}</p>
+          {product.collections.length > 0 && (
+            <p className="text-sm text-gray-600 mb-1">Collections: {product.collections.join(', ')}</p>
+          )}
+          {product.tags.length > 0 && (
+            <p className="text-sm text-gray-600 mb-4">Tags: {product.tags.join(', ')}</p>
+          )}
           <p className="text-2xl font-semibold mb-1">{product.price}</p>
           <p className="text-[15.11px] text-[#B8A893] mb-4">{product.mrpText}</p>
 
@@ -172,7 +182,7 @@ export default function ProductPage() {
                 <Button
                   key={size}
                   variant="outline"
-                  className={`w-10 h-10 border-2 ${selectedSize === size ? 'border-[#4B3D34]' : 'border-transparent'} text-[#4B3D34]`}
+                  className={`w-15 h-10 border-2 ${selectedSize === size ? 'border-[#4B3D34]' : 'border-transparent'} text-[#4B3D34]`}
                   onClick={() => setSelectedSize(size)}
                 >
                   {size}
@@ -208,6 +218,12 @@ export default function ProductPage() {
 
           {/* Delivery Info */}
           <p className="text-[12px] text-[#262626] mb-4">{product.deliveryInfo}</p>
+
+          {/* Description */}
+          <div className="mb-4">
+            <h3 className="font-semibold mb-2 text-[#4F482C]">Description</h3>
+            <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: product.description }} />
+          </div>
 
           {/* Accordion Links */}
           <div className="border-t border-b border-[#D9D9D9]">

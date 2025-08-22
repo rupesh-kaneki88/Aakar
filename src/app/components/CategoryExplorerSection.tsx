@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { mockProducts } from "@/lib/mockProducts";
+import { getShopifyProducts, getShopifyCollections } from "@/lib/shopifyProducts";
 import gsap from "gsap";
 import { Product } from "@/lib/types";
 import { Badge } from "@/app/components/ui/Badge";
@@ -15,49 +15,44 @@ import Link from "next/link";
 
 export const CategoryExplorerSection = (): React.JSX.Element => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [categories, setCategories] = useState<{ name: string; selected: boolean }[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]); // Added missing state
   const { addItem, removeItem, isInWishlist } = useWishlist();
 
   const handleCategoryClick = (categoryName: string) => {
-    setSelectedCategory(categoryName); 
-  };
-
-  // Category filter data
-  const categories = [
-    { name: "All", selected: selectedCategory === "All" },
-    { name: "Straight Suits", selected: selectedCategory === "Straight Suits" },
-    { name: "Anarkalis", selected: selectedCategory === "Anarkalis" },
-    { name: "Sharara Suits", selected: selectedCategory === "Sharara Suits" },
-    { name: "Pakistani Suits", selected: selectedCategory === "Pakistani Suits" },
-    { name: "Garara Suits", selected: selectedCategory === "Garara Suits" },
-  ];
-
-  // Product data
-  const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]);
-
-  const getRandomProducts = (category: string): Product[] => {
-    let filteredProducts: Product[] = [];
-    if (category === "All") {
-      filteredProducts = mockProducts;
-    } else {
-      filteredProducts = mockProducts.filter(
-        (product) => product.category.toLowerCase().replace(/ /g, "-") === category.toLowerCase().replace(/ /g, "-")
-      );
-    }
-
-    // Shuffle array and get 3 random products
-    for (let i = filteredProducts.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [filteredProducts[i], filteredProducts[j]] = [
-        filteredProducts[j],
-        filteredProducts[i],
-      ];
-    }
-    return filteredProducts.slice(0, 3);
+    setSelectedCategory(categoryName);
   };
 
   useEffect(() => {
-    setDisplayedProducts(getRandomProducts(selectedCategory));
-  }, [selectedCategory]);
+    async function fetchInitialData() {
+      const shopifyCollections = await getShopifyCollections();
+      const formattedCategories = [
+        { name: "All", selected: false },
+        ...shopifyCollections.map(col => ({ name: col.title, selected: false }))
+      ];
+      setCategories(formattedCategories.map(cat => ({ ...cat, selected: cat.name === selectedCategory })));
+
+      const shopifyProducts = await getShopifyProducts(20); // Fetch more products to allow filtering
+      setAllProducts(shopifyProducts);
+    }
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    setCategories(prevCategories => 
+      prevCategories.map(cat => ({ ...cat, selected: cat.name === selectedCategory }))
+    );
+
+    if (selectedCategory === "All") {
+      setDisplayedProducts(allProducts.slice(0, 3)); // Display 3 random products from all
+    } else {
+      const filtered = allProducts.filter(product => 
+        product.collections.some(col => col.toLowerCase() === selectedCategory.toLowerCase())
+      );
+      setDisplayedProducts(filtered.slice(0, 3)); // Display 3 random products from filtered
+    }
+  }, [selectedCategory, allProducts]);
 
   return (
     <section className="lg:w-[1206px] flex flex-col rounded-[15.11px] overflow-hidden border-[1.51px] border-dashed border-neutral-800 relative md:mx-[153px]">
@@ -133,7 +128,7 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
                     <div className="flex items-center justify-between w-full">
                       <Badge className="bg-[#4b3d34] text-white rounded-[75.56px] border-[0.76px] border-dashed px-2 md:px-[12.09px] py-1 md:py-[7.56px] h-auto">
                         <span className="[font-family:'Akatab',Helvetica] font-normal text-xs md:text-sm leading-[18px] md:leading-[21px] mt-[-0.76px]">
-                          {product.name}
+                          {product.tags[0]}
                         </span>
                       </Badge>
 
