@@ -251,7 +251,7 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
-      <RecommendedProductsSection />
+      <RecommendedProductsSection collectionHandle={product.collections[0]} />
     </div>
   );
 }

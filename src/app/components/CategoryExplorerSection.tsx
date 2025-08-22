@@ -132,7 +132,7 @@ export const CategoryExplorerSection = (): React.JSX.Element => {
                         </span>
                       </Badge>
 
-                      <Link href={`/product/${product.id}`} scroll={true}>
+                      <Link href={`/product/${product.handle}`} scroll={true}>
                         <Button className="bg-[#4b3d34] text-white rounded-[9.07px] border-[0.76px] border-none px-3 md:px-[18.14px] py-2 md:py-[13.6px] h-auto relative">
                           <span className="[font-family:'Akatab',Helvetica] font-normal text-xs md:text-sm leading-[18px] md:leading-[21px] mt-[-0.76px] mr-1">
                             Shop Now

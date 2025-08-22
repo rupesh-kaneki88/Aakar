@@ -12,9 +12,7 @@ import Sidebar from '@/app/components/Sidebar';
 import Link from 'next/link';
 import { Button } from '@/app/components/ui/Button';
 import { Product } from '@/lib/types';
-import { mockProducts } from '@/lib/mockProducts';
-
-const PRODUCTS_PER_PAGE = 9;
+import { getShopifyProductsByCategory } from '@/lib/shopifyProducts';
 
 export default function CategoryPage() {
   const { slug } = useParams();
@@ -23,49 +21,36 @@ export default function CategoryPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
+  const [cursor, setCursor] = useState<string | null>(null);
 
   const { addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist } = useWishlist();
 
-  const fetchProducts = useCallback(async (currentPage: number) => {
+  const fetchProducts = useCallback(async (currentCursor: string | null) => {
     setLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000)); 
-
-    const filteredProducts = mockProducts.filter(product => product.category === slug);
-    const newProducts = filteredProducts.slice(
-      currentPage * PRODUCTS_PER_PAGE,
-      (currentPage + 1) * PRODUCTS_PER_PAGE
-    );
-
+    const { products: newProducts, hasNextPage, endCursor } = await getShopifyProductsByCategory(slug as string, 9, currentCursor);
     setProducts(prevProducts => [...prevProducts, ...newProducts]);
-    setHasMore(filteredProducts.length > (currentPage + 1) * PRODUCTS_PER_PAGE);
+    setHasMore(hasNextPage);
+    setCursor(endCursor);
     setLoading(false);
   }, [slug]);
 
   useEffect(() => {
     setProducts([]); // Clear products when slug changes
-    setPage(0); // Reset page when slug changes
+    setCursor(null); // Reset cursor when slug changes
     setHasMore(true); // Reset hasMore when slug changes
-    fetchProducts(0);
+    fetchProducts(null);
   }, [slug, fetchProducts]);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 500 && !loading && hasMore) {
-        setPage(prevPage => prevPage + 1);
+        fetchProducts(cursor);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [loading, hasMore]);
-
-  useEffect(() => {
-    if (page > 0) {
-      fetchProducts(page);
-    }
-  }, [page, fetchProducts]);
+  }, [loading, hasMore, cursor, fetchProducts]);
 
   return (
     <div className="bg-[#F6F7F8] flex flex-col rounded-[15.11px] overflow-hidden overflow-x-hidden relative md:mx-[53px] mx-auto px-4 py-4">
@@ -95,11 +80,11 @@ export default function CategoryPage() {
               <div key={product.id} className={`flex-1 ${index < products.length - 1 ? " md:border-b-0 " : ""}`}>
                 <div className="bg-white overflow-hidden flex flex-col gap-4 md:gap-[22.67px] p-4 md:p-[22.67px]">
                   <div className="relative w-full h-[300px] md:h-[468px] overflow-hidden">
-                    <Link key={product.id} href={`/product/${product.id}`} className="group" onClick={() => setLoading(true)}>
+                    <Link key={product.id} href={`/product/${product.handle}`} className="group" onClick={() => setLoading(true)}>
                       <Image
                         src={product.imageUrl}
                         alt={product.name}
-                        layout="fill"
+                        fill
                         objectFit="cover"
                         className="rounded-t-lg"
                         />
@@ -109,7 +94,7 @@ export default function CategoryPage() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 md:gap-[10.58px]">
-                    <Link key={product.id} href={`/product/${product.id}`} className="group" onClick={() => setLoading(true)}>
+                    <Link key={product.id} href={`/product/${product.handle}`} className="group" onClick={() => setLoading(true)}>
                       <h3 className="font-medium text-[#4e472c] text-sm md:text-[18.1px] leading-[20px] md:leading-[27.2px] [font-family:'Akatab',Helvetica] tracking-[0] mt-[-0.76px]">
                         {product.name}
                       </h3>
@@ -121,7 +106,7 @@ export default function CategoryPage() {
                         </span>
                         <div className="w-[3.02px] h-[3.02px] bg-dark-30 rounded-[1.51px]" />
                         <span className="[font-family:'Akatab',Helvetica] font-medium text-[#4b3d34] text-sm md:text-[15.1px] leading-[18px] md:leading-[22.7px] mt-[-0.76px]">
-                          {product.color}
+                          {product.colors[0]?.name || 'N/A'}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 md:gap-[6.05px]">

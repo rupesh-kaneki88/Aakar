@@ -1,52 +1,39 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HeartIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/Button';
+import { Product } from '@/lib/types';
+import { getShopifyProductsByCategory } from '@/lib/shopifyProducts';
 
-interface RecommendedProduct {
-  id: string;
-  name: string;
-  imageUrl: string;
-  price: string;
-  color: string;
+interface RecommendedProductsSectionProps {
+  collectionHandle: string;
 }
 
-const mockRecommendedProducts: RecommendedProduct[] = [
-  {
-    id: 'elegant-straight-suit',
-    name: 'Elegant Straight Suit',
-    imageUrl: '/straight-suits/IMG_01.svg',
-    price: '₹ 15,000',
-    color: 'Ivory',
-  },
-  {
-    id: 'floral-straight-suit',
-    name: 'Floral Straight Suit',
-    imageUrl: '/straight-suits/IMG_02.svg',
-    price: '₹ 18,000',
-    color: 'Ivory',
-  },
-  {
-    id: 'embroidered-straight-suit',
-    name: 'Embroidered Straight Suit',
-    imageUrl: '/straight-suits/IMG_03.svg',
-    price: '₹ 22,000',
-    color: 'Ivory',
-  },
-];
+export function RecommendedProductsSection({ collectionHandle }: RecommendedProductsSectionProps) {
+  const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
 
-export function RecommendedProductsSection() {
+  useEffect(() => {
+    async function fetchRecommendedProducts() {
+      const { products } = await getShopifyProductsByCategory(collectionHandle, 3);
+      setRecommendedProducts(products);
+    }
+
+    if (collectionHandle) {
+      fetchRecommendedProducts();
+    }
+  }, [collectionHandle]);
+
   return (
     <section className="w-full mt-8 md:mt-16" aria-labelledby="recommended-products-heading">
       <h2 id="recommended-products-heading" className="text-4xl font-bold text-[#4F482C] text-center mb-8">
         You may also like
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {mockRecommendedProducts.slice(0, 3).map((product) => (
-          <Link key={product.id} href={`/product/${product.id}`} className="group">
+        {recommendedProducts.map((product) => (
+          <Link key={product.id} href={`/product/${product.handle}`} className="group">
             <div className="flex-1">
               <div className="bg-white overflow-hidden flex flex-col gap-4 md:gap-[22.67px] p-4 md:p-[22.67px]">
                 <div className="relative w-full h-[300px] md:h-[468px] overflow-hidden">
@@ -72,7 +59,7 @@ export function RecommendedProductsSection() {
                       </span>
                       <div className="w-[3.02px] h-[3.02px] bg-dark-30 rounded-[1.51px]" />
                       <span className="[font-family:'Akatab',Helvetica] font-medium text-[#4b3d34] text-sm md:text-[15.1px] leading-[18px] md:leading-[22.7px] mt-[-0.76px]">
-                        {product.color}
+                        {product.colors[0]?.name || 'N/A'}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 md:gap-[6.05px]">
